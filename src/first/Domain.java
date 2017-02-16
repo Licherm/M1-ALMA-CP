@@ -19,11 +19,11 @@ public class Domain {
 	}
 	
 	
-	public boolean removeFirst(int e){
+	public boolean removeFirst(){
 		return this.valeurs.pollFirst() !=null;
 	}
 	
-	public boolean removeLast(int e){
+	public boolean removeLast(){
 		return this.valeurs.pollLast() !=null;
 	}
 		
