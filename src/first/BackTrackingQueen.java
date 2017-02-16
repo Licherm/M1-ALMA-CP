@@ -17,7 +17,7 @@ public class BackTrackingQueen {
 	public boolean isValide(Node node){
 		
 		Node nodeCopy = new Node(node);
-		System.out.println(node.toStringQueen());
+		//System.out.println(node.toStringQueen());
 		//System.out.println("Nb domain : "+node.getDomains().size());
 		for (int i=0;i<nodeCopy.getDomains().size();++i){
 			Domain d=nodeCopy.get(i);
@@ -52,9 +52,7 @@ public class BackTrackingQueen {
 	 * @warning la fonction fait elle même l'affichage 
 	 * 
 	 */
-	//FIXME 
 	public void backTrackingQueenPrune(Node n){
-		System.out.println("Hello");
 		Node copyNode= new Node(n);
 		Node copyNode2= new Node();
 		Node copyNode3;
@@ -63,6 +61,7 @@ public class BackTrackingQueen {
 		TreeSet<Integer> tree= new TreeSet<Integer>();
 		boolean solution=true;
 		int compteur=0;
+		int compteur2=0;
 		
 		while((solution)&&(compteur<copyNode.getDomains().size())){
 			//Si la taille du domain est de 1 alors on a plus besoin de travailler dessus on passe au suivant
@@ -84,44 +83,26 @@ public class BackTrackingQueen {
 			//On copy les valeurs du premier domaine de la liste qui à encore une taille supérieur à 1
 			valeurs=copyNode.getDomains().get(compteur).getValeurs();
 			for (Integer val : valeurs){
-				//System.out.println("plop");
+				compteur2=0;
 				tree.add(val);
 				domain.setValeurs(tree);
 				copyNode2.add(domain);
-				//System.out.println("copy Node2 syze : "+copyNode2.getDomains().size());
 				if(isValide(copyNode2)){//Cette combinaison marche pour l'instant on avance
-					//System.out.println("IS Valide");
-					//for (Domain domainRestant : copyNode.getDomains()){
 					for (int i=compteur+1;i<copyNode.getDomains().size();++i){
-						System.out.println("i = "+i);
 						copyNode2.add(copyNode.get(i));
+						++compteur2;	
 					}
 					// On reduit un domaine de plus à la taille de 1 on fait l'apelle recursif
-					System.out.println("Recursivite !!!!!!!!!!!!!!!!!!!");
 					backTrackingQueenPrune(copyNode2);
-					System.out.println("Retour !!");
-					copyNode2 = new Node();
-					copyNode2.setDomains(copyNode3.getDomains());
-					System.out.println("copy Node2 syze : "+copyNode2.getDomains().size());
-
-					//System.out.println("Compteur ="+compteur);
-					
-					
-					
+					for (int i=0;i<compteur2;++i){
+						copyNode2.removeLast();
+					}
 				}
-				//Clear des variables pour la prochaine boucle
-				//copyNode2.setDomains(copyNode3.getDomains());
-				//for (int p=0;p<=compteur;++p){
-					copyNode2.removeLast();
-				//}
-				//System.out.println("copy Node3 syze : "+copyNode3.getDomains().size());
-				//System.out.println("copy Node2 syze : "+copyNode2.getDomains().size());
-				domain.removeLast();
-				tree.clear();
-				
+				copyNode2.removeLast();
+				tree.clear();				
 			}
-			
 		}
+		
 	}
 	
 	
