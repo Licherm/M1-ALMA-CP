@@ -52,7 +52,7 @@ public class BackTrackingQueen {
 	 * @warning la fonction fait elle même l'affichage 
 	 * 
 	 */
-	//FIXME 
+	//FIXME s
 	public void backTrackingQueenPrune(Node n){
 		System.out.println("Hello");
 		Node copyNode= new Node(n);
