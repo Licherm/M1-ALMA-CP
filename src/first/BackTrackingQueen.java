@@ -49,10 +49,11 @@ public class BackTrackingQueen {
 	/**
 	 * @brief Première version du Backtracking pour le problème des queens. Fonction récursive
 	 * @param n = le node
-	 * @warning la fonction fait elle même l'affichage 
+	 * @return int : le nombre de solution trouvé
+	 * @warning la fonction fait elle même l'affichage et la compléxité est très mauvaise
 	 * 
 	 */
-	public void backTrackingQueenPrune(Node n){
+	public int backTrackingQueenPrune(Node n){
 		Node copyNode= new Node(n);
 		Node copyNode2= new Node();
 		Node copyNode3;
@@ -62,6 +63,7 @@ public class BackTrackingQueen {
 		boolean solution=true;
 		int compteur=0;
 		int compteur2=0;
+		int nbSolution=0;
 		
 		while((solution)&&(compteur<copyNode.getDomains().size())){
 			//Si la taille du domain est de 1 alors on a plus besoin de travailler dessus on passe au suivant
@@ -75,8 +77,9 @@ public class BackTrackingQueen {
 		}
 		copyNode3 = new Node (copyNode2);
 		if(solution){
-			System.out.println("Une solution !!!!!!!!!!!!!!!!!!!!!");
+			System.out.println("Une solution !");
 			System.out.println(n.toStringQueen());
+			return ++nbSolution;
 			
 		}else{
 			
@@ -93,7 +96,7 @@ public class BackTrackingQueen {
 						++compteur2;	
 					}
 					// On reduit un domaine de plus à la taille de 1 on fait l'apelle recursif
-					backTrackingQueenPrune(copyNode2);
+					nbSolution+=backTrackingQueenPrune(copyNode2);
 					for (int i=0;i<compteur2;++i){
 						copyNode2.removeLast();
 					}
@@ -102,7 +105,7 @@ public class BackTrackingQueen {
 				tree.clear();				
 			}
 		}
-		
+		return nbSolution;
 	}
 	
 	
@@ -115,20 +118,22 @@ public class BackTrackingQueen {
 		Domain d= new Domain();
 		Node n = new Node();
 		TreeSet<Integer> tree= new TreeSet<Integer>();
-		int nbCase=4;// Les dimension de l'échequier
+		
+		int nbCase=7;// Les dimensions de l'échequier
 		
 		for (int i=0;i<nbCase;++i){
 			tree.add(i+1);
-			System.out.println(i+1);
 		}
 		
 		for (int i=0;i<nbCase;++i){
 			d.setValeurs(tree);
 			n.add(d);
 		}
-		System.out.println("size de n: "+n.getDomains().size());
+		System.out.println("Taille de l'échéquier "+nbCase);
 		
-		backQ.backTrackingQueenPrune(n);
+		
+		System.out.println(backQ.backTrackingQueenPrune(n)+" solutions trouvé");
+		
 
 	}
 
