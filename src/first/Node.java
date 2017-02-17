@@ -45,6 +45,10 @@ public class Node {
 		this.domains = domains;
 	}
 	
+	/**
+	 * @brief to string pour le problème des dames
+	 * @return String : la string pour l'affichage
+	 */
 	public String toStringQueen(){
 		String s="";
 		int i=1;

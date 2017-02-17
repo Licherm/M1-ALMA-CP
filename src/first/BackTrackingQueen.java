@@ -17,25 +17,19 @@ public class BackTrackingQueen {
 	public boolean isValide(Node node){
 		
 		Node nodeCopy = new Node(node);
-		//System.out.println(node.toStringQueen());
-		//System.out.println("Nb domain : "+node.getDomains().size());
 		for (int i=0;i<nodeCopy.getDomains().size();++i){
 			Domain d=nodeCopy.get(i);
 			int val1=d.getValeurs().first();
 			for (int n=i+1;n<nodeCopy.getDomains().size();++n){
 				Domain d2=nodeCopy.get(n);
 				int val2=d2.getValeurs().first();
-				//System.out.println("val2 = "+val2+" et val1 = "+val1);
-				//Test Colonne pas dans le mÃªme colonne
+				//Test Colonne pas dans le même colonne
 				if(val1==val2){
-					//System.out.println("Yo egale");
-					return false; // si dans la mÃªme colonne
+					return false; // si dans la même colonne
 				}
 				
 				//Test la diagonale
-				//System.out.println("n-i = "+(n-i));
 				if (Math.abs(val1-val2)==n-i){
-					//System.out.println("Yo diago");
 					return false; // sur la diagonale
 				}
 			}			
@@ -56,7 +50,6 @@ public class BackTrackingQueen {
 	public int backTrackingQueenPrune(Node n){
 		Node copyNode= new Node(n);
 		Node copyNode2= new Node();
-		Node copyNode3;
 		Domain domain= new Domain();
 		TreeSet<Integer> valeurs= new TreeSet<Integer>();
 		TreeSet<Integer> tree= new TreeSet<Integer>();
@@ -75,7 +68,6 @@ public class BackTrackingQueen {
 			}
 			
 		}
-		copyNode3 = new Node (copyNode2);
 		if(solution){
 			System.out.println("Une solution !");
 			System.out.println(n.toStringQueen());
@@ -91,17 +83,18 @@ public class BackTrackingQueen {
 				domain.setValeurs(tree);
 				copyNode2.add(domain);
 				if(isValide(copyNode2)){//Cette combinaison marche pour l'instant on avance
-					for (int i=compteur+1;i<copyNode.getDomains().size();++i){
+					for (int i=compteur+1;i<copyNode.getDomains().size();++i){ // Ajout des autres domaines
 						copyNode2.add(copyNode.get(i));
 						++compteur2;	
 					}
 					// On reduit un domaine de plus à la taille de 1 on fait l'apelle recursif
 					nbSolution+=backTrackingQueenPrune(copyNode2);
-					for (int i=0;i<compteur2;++i){
+					
+					for (int i=0;i<compteur2;++i){// On suprime les domaines ajouter dans le foreach précedent
 						copyNode2.removeLast();
 					}
 				}
-				copyNode2.removeLast();
+				copyNode2.removeLast();// Enlève pour essayer la prochaine valeur
 				tree.clear();				
 			}
 		}
