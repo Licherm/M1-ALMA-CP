@@ -2,7 +2,9 @@ package first;
 
 import java.util.TreeSet;
 
-public class Domain {
+import Interface.IDomain;
+
+public class Domain implements IDomain {
 
 	private TreeSet<Integer> valeurs;
 	
@@ -14,25 +16,39 @@ public class Domain {
 		this.valeurs=valeurs;
 	}
 
+	/* (non-Javadoc)
+	 * @see first.IDomain#remove(int)
+	 */
+	@Override
 	public boolean remove(int e){
 		return this.valeurs.remove(e);
 	}
 	
 	
+	/* (non-Javadoc)
+	 * @see first.IDomain#removeFirst()
+	 */
+	@Override
 	public boolean removeFirst(){
 		return this.valeurs.pollFirst() !=null;
 	}
 	
+	/* (non-Javadoc)
+	 * @see first.IDomain#removeLast()
+	 */
+	@Override
 	public boolean removeLast(){
 		return this.valeurs.pollLast() !=null;
 	}
 		
 	
 	
+	
 	public TreeSet<Integer> getValeurs() {
 		return valeurs;
 	}
 
+	
 	public void setValeurs(TreeSet<Integer> valeurs) {
 		this.valeurs = valeurs;
 	}

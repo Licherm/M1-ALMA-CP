@@ -1,9 +1,13 @@
 package first;
 
 import java.util.ArrayList;
+import java.util.Timer;
 import java.util.TreeSet;
 
 import com.sun.org.apache.bcel.internal.generic.CPInstruction;
+
+import Interface.IDomain;
+import Interface.INode;
 
 public class BackTrackingQueen {
 	
@@ -16,7 +20,7 @@ public class BackTrackingQueen {
 	 */
 	public boolean isValide(Node node){
 		
-		Node nodeCopy = new Node(node);
+		INode nodeCopy = new Node(node);
 		for (int i=0;i<nodeCopy.getDomains().size();++i){
 			Domain d=nodeCopy.get(i);
 			int val1=d.getValeurs().first();
@@ -39,6 +43,39 @@ public class BackTrackingQueen {
 	}
 	
 	
+	/**
+	 * @brief test si une affectation donnÃ©e est possible. Version amélioré sans vérification inutiles.
+	 * @param node = node ou chacun des domains est rÃ©duit Ã  une seule valeur
+	 *  
+	 * @return true si l'affectation est valide false sinon
+	 */
+	public boolean isValideV2(Node node){
+		
+		INode nodeCopy = new Node(node);
+		int lastVal=node.getDomains().size()-1;
+		if (lastVal>0){ 
+			Domain domainLast=nodeCopy.get(lastVal);
+			int val = domainLast.getValeurs().first(); 
+			for (int i=0;i<nodeCopy.getDomains().size()-1;++i){
+				Domain d=nodeCopy.get(i);
+				int val2=d.getValeurs().first();
+				
+				//Test Colonne pas dans le même colonne
+				if(val2==val){
+					return false; // si dans la même colonne
+				}
+					
+				//Test la diagonale
+				if (Math.abs(val2-val)==lastVal-i){
+					return false; // sur la diagonale
+				}
+							
+			}
+		}
+		return true;
+		
+	}
+	
 	
 	/**
 	 * @brief Première version du Backtracking pour le problème des queens. Fonction récursive
@@ -48,7 +85,7 @@ public class BackTrackingQueen {
 	 * 
 	 */
 	public int backTrackingQueenPrune(Node n){
-		Node copyNode= new Node(n);
+		INode copyNode= new Node(n);
 		Node copyNode2= new Node();
 		Domain domain= new Domain();
 		TreeSet<Integer> valeurs= new TreeSet<Integer>();
@@ -82,7 +119,7 @@ public class BackTrackingQueen {
 				tree.add(val);
 				domain.setValeurs(tree);
 				copyNode2.add(domain);
-				if(isValide(copyNode2)){//Cette combinaison marche pour l'instant on avance
+				if(isValideV2(copyNode2)){//Cette combinaison marche pour l'instant on avance
 					for (int i=compteur+1;i<copyNode.getDomains().size();++i){ // Ajout des autres domaines
 						copyNode2.add(copyNode.get(i));
 						++compteur2;	
@@ -111,8 +148,9 @@ public class BackTrackingQueen {
 		Domain d= new Domain();
 		Node n = new Node();
 		TreeSet<Integer> tree= new TreeSet<Integer>();
+		double chrono=System.currentTimeMillis();
 		
-		int nbCase=7;// Les dimensions de l'échequier
+		int nbCase=13;// Les dimensions de l'échequier
 		
 		for (int i=0;i<nbCase;++i){
 			tree.add(i+1);
@@ -126,6 +164,9 @@ public class BackTrackingQueen {
 		
 		
 		System.out.println(backQ.backTrackingQueenPrune(n)+" solutions trouvé");
+		chrono=System.currentTimeMillis()-chrono;
+		chrono=chrono/1000;
+		System.out.println("En "+chrono+" secondes");
 		
 
 	}
