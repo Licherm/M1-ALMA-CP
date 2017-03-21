@@ -108,8 +108,9 @@ public class BackTrackingQueen {
 			
 		}
 		if(solution){
-			System.out.println("Une solution !");
-			System.out.println(n.toStringQueen());
+			//Affichage prend trop de temper enlevez sauf pour debug
+			//System.out.println("Une solution !");
+			//System.out.println(n.toStringQueen());
 			return ++nbSolution;
 			
 		}else{
@@ -152,7 +153,7 @@ public class BackTrackingQueen {
 		LinkedList<Integer> tree= new LinkedList<Integer>();
 		double chrono=System.currentTimeMillis();
 		
-		int nbCase=7;// Les dimensions de l'échequier
+		int nbCase=15;// Les dimensions de l'échequier
 		
 		for (int i=0;i<nbCase;++i){
 			tree.add(i+1);

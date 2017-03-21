@@ -91,7 +91,7 @@ public class BackTrackingQueen2 {
 		boolean solution=true;
 		int compteur=0;
 		int compteur2=0;
-		int compteur3=0;
+		int compteur3=0;// Utile pendant le foward check
 		int nbSolution=0;
 		int ligne=0;
 		while((solution)&&(compteur<copyNode.getDomains().size())){
@@ -102,11 +102,12 @@ public class BackTrackingQueen2 {
 				copyNode3.add(copyNode.get(compteur));
 				++compteur;
 			}else{
-				solution=false; // Un des Domain2es a encore plusieur valeurs -> on est pas encore arriver à une solution
+				solution=false; // Un des Domaines a encore plusieur valeurs -> on est pas encore arriver à une solution
 			}
 			
 		}
 		if(solution){
+			//Affichage prend trop de temper enlevez sauf pour debug
 			//System.out.println("Une solution !");
 			//System.out.println(n.toStringQueen());
 			return ++nbSolution;
@@ -115,7 +116,7 @@ public class BackTrackingQueen2 {
 			
 			//On copy les valeurs du premier Domaine de la liste qui à encore une taille supérieur à 1
 			valeurs=copyNode.get(compteur).getValeurs();
-			ligne=copyNode.getLigneAt(compteur);
+			ligne=copyNode.getLigneAt(compteur);//On oublie pas de set la ligne
 			for (Integer val : valeurs){
 				boolean valide = true; // Passe à false si l'un des domaines est réduit à 0 par le forward check
 				boolean valide2 = true;
@@ -131,19 +132,23 @@ public class BackTrackingQueen2 {
 					//for (int i=compteur+1;i<copyNode.getDomains().size();++i){
 					while ((i<copyNode.getDomains().size())&&(valide)&&(valide2)){
 						//Je foward check ici
-						//copyNode2.add(copyNode.get(i));
-						Domain2 domainTempo =fowardCheck(val,copyNode.getLigneAt(i)-ligne,copyNode.get(i)); // compteur2+1 le nombrede ligne d'écart
+						//copyNode.getLigneAt(i)-ligne = le nombre de ligne d'écart pour la diagonal
+						Domain2 domainTempo =fowardCheck(val,copyNode.getLigneAt(i)-ligne,copyNode.get(i)); 
 						if(domainTempo.getValeurs().size()<=0){
 							valide = false;							
 						}else{
 							copyNode2.add(domainTempo);
+							// On doit utiliser copyNode3 car isValide ne support pas des Node avec des variables
+							//ayant un domiane d'une cardinalité supérieur à 1
 							copyNode3.add(domainTempo);
 							++compteur2;
+							// If obligatoire sinon on valide des mauvaises solutions car les domaines de taille 1 
+							//ne sont pas check au début de la fonction
 							if((domainTempo.getValeurs().size()==1)){
 									valide2=isValideV2(copyNode3);
 									++compteur3;
 								}else{
-									copyNode3.removeLast();
+									copyNode3.removeLast();// On veut pas de domaine de size >1 dans copyNode3
 								}
 							
 							++i;
@@ -183,7 +188,7 @@ public class BackTrackingQueen2 {
 		LinkedList<Integer> tree= new LinkedList<Integer>();
 		double chrono=System.currentTimeMillis();
 		
-		int nbCase=13;// Les dimensions de l'échequier
+		int nbCase=14;// Les dimensions de l'échequier
 		
 		for (int i=0;i<nbCase;++i){
 			tree.add(i+1);
@@ -194,7 +199,6 @@ public class BackTrackingQueen2 {
 
 			d.setValeurs(tree);
 			d.setLigne(i+1);
-			System.out.println(d.getLigne());
 			n.add(d);
 		}
 		System.out.println("Taille de l'échéquier "+nbCase);
