@@ -28,9 +28,7 @@ public class BackTrackingQueen2 {
 			for (int i=0;i<Node2Copy.getDomains().size()-1;++i){
 				Domain2 d=Node2Copy.get(i);
 				int val2=d.getValeurs().getFirst();
-				int ligneActuelle=d.getLigne();
-				//System.out.println("d ="+d.getLigne());
-				
+				int ligneActuelle=d.getLigne();				
 				//Test Colonne pas dans le même colonne
 				if(val2==val){
 					return false; // si dans la même colonne
@@ -63,10 +61,9 @@ public class BackTrackingQueen2 {
 				check=false;
 			}
 			// TODO : ce if provoque le bug trouver pourquoi
-			if(Math.abs(lastValAdd-val)==index){
+			if(Math.abs(val-lastValAdd)==index){
 				check =false;
-			}
-			
+			}			
 			if (check){
 				domainMod.addLast(val);
 			}
@@ -87,12 +84,14 @@ public class BackTrackingQueen2 {
 	public int backTrackingQueenPrune2(Node2 n){
 		Node2 copyNode= new Node2(n);
 		Node2 copyNode2= new Node2();
+		Node2 copyNode3= new Node2();
 		Domain2 domain2= new Domain2();
 		LinkedList<Integer> valeurs= new LinkedList<Integer>();
 		LinkedList<Integer> tree= new LinkedList<Integer>();
 		boolean solution=true;
 		int compteur=0;
 		int compteur2=0;
+		int compteur3=0;
 		int nbSolution=0;
 		int ligne=0;
 		while((solution)&&(compteur<copyNode.getDomains().size())){
@@ -100,6 +99,7 @@ public class BackTrackingQueen2 {
 			//copyNode.getDomains().get(compteur).getValeurs().size()==1
 			if(copyNode.get(compteur).getValeurs().size()==1){
 				copyNode2.add(copyNode.get(compteur));
+				copyNode3.add(copyNode.get(compteur));
 				++compteur;
 			}else{
 				solution=false; // Un des Domain2es a encore plusieur valeurs -> on est pas encore arriver à une solution
@@ -115,15 +115,17 @@ public class BackTrackingQueen2 {
 			
 			//On copy les valeurs du premier Domaine de la liste qui à encore une taille supérieur à 1
 			valeurs=copyNode.get(compteur).getValeurs();
-			ligne=copyNode.get(compteur).getLigne();
+			ligne=copyNode.getLigneAt(compteur);
 			for (Integer val : valeurs){
 				boolean valide = true; // Passe à false si l'un des domaines est réduit à 0 par le forward check
 				boolean valide2 = true;
 				compteur2=0;
+				compteur3=0;
 				tree.add(val);
 				domain2.setValeurs(tree);
 				domain2.setLigne(ligne);
 				copyNode2.add(domain2);
+				copyNode3.add(domain2);
 				int i=compteur+1;
 				if(isValideV2(copyNode2)){//Cette combinaison marche pour l'instant on avance
 					//for (int i=compteur+1;i<copyNode.getDomains().size();++i){
@@ -135,9 +137,13 @@ public class BackTrackingQueen2 {
 							valide = false;							
 						}else{
 							copyNode2.add(domainTempo);
+							copyNode3.add(domainTempo);
 							++compteur2;
 							if((domainTempo.getValeurs().size()==1)){
-									valide2=isValideV2(copyNode2);
+									valide2=isValideV2(copyNode3);
+									++compteur3;
+								}else{
+									copyNode3.removeLast();
 								}
 							
 							++i;
@@ -152,6 +158,10 @@ public class BackTrackingQueen2 {
 					
 					for (int p=0;p<compteur2;++p){// On suprime les Domain2es ajouter dans le foreach précedent
 						copyNode2.removeLast();
+					}
+					
+					for(int p=0;p<compteur3;++p){
+						copyNode3.removeLast();
 					}
 				}
 				copyNode2.removeLast();// Enlève pour essayer la prochaine valeur
@@ -173,7 +183,7 @@ public class BackTrackingQueen2 {
 		LinkedList<Integer> tree= new LinkedList<Integer>();
 		double chrono=System.currentTimeMillis();
 		
-		int nbCase=8;// Les dimensions de l'échequier
+		int nbCase=13;// Les dimensions de l'échequier
 		
 		for (int i=0;i<nbCase;++i){
 			tree.add(i+1);
