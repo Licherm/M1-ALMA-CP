@@ -152,7 +152,7 @@ public class BackTrackingQueen {
 		LinkedList<Integer> tree= new LinkedList<Integer>();
 		double chrono=System.currentTimeMillis();
 		
-		int nbCase=13;// Les dimensions de l'échequier
+		int nbCase=8;// Les dimensions de l'échequier
 		
 		for (int i=0;i<nbCase;++i){
 			tree.add(i+1);

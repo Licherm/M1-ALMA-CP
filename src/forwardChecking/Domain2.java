@@ -37,6 +37,10 @@ public class Domain2 implements  IDomain {
 		// TODO Auto-generated method stub
 		return this.valeurs.pollLast()!=null;
 	}
+	
+	public void addLast(int val){
+		this.valeurs.addLast(val);
+	}
 
 	public LinkedList<Integer> getValeurs() {
 		// TODO Auto-generated method stub
