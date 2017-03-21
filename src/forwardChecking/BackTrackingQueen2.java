@@ -1,5 +1,6 @@
 package forwardChecking;
 
+import java.util.LinkedList;
 import java.util.TreeSet;
 
 import first.BackTrackingQueen;
@@ -11,19 +12,19 @@ public class BackTrackingQueen2 {
 
 	/**
 	 * @brief test si une affectation donnÃ©e est possible
-	 * @param node = node ou chacun des domains est rÃ©duit Ã  une seule valeur
+	 * @param Node2 = Node2 ou chacun des Domain2s est rÃ©duit Ã  une seule valeur
 	 *  
 	 * @return true si l'affectation est valide false sinon
 	 */
-	public boolean isValide(Node node){
+	public boolean isValide(Node2 Node2){
 		
-		Node nodeCopy = new Node(node);
-		for (int i=0;i<nodeCopy.getDomains().size();++i){
-			Domain d=nodeCopy.get(i);
-			int val1=d.getValeurs().first();
-			for (int n=i+1;n<nodeCopy.getDomains().size();++n){
-				Domain d2=nodeCopy.get(n);
-				int val2=d2.getValeurs().first();
+		Node2 Node2Copy = new Node2(Node2);
+		for (int i=0;i<Node2Copy.getDomains().size();++i){
+			Domain2 d=Node2Copy.get(i);
+			int val1=d.getValeurs().getFirst();
+			for (int n=i+1;n<Node2Copy.getDomains().size();++n){
+				Domain2 d2=Node2Copy.get(n);
+				int val2=d2.getValeurs().getFirst();
 				//Test Colonne pas dans le même colonne
 				if(val1==val2){
 					return false; // si dans la même colonne
@@ -42,20 +43,20 @@ public class BackTrackingQueen2 {
 	
 	/**
 	 * @brief test si une affectation donnÃ©e est possible. Version amélioré sans vérification inutiles.
-	 * @param node = node ou chacun des domains est rÃ©duit Ã  une seule valeur
+	 * @param Node2 = Node2 ou chacun des Domain2s est rÃ©duit Ã  une seule valeur
 	 *  
 	 * @return true si l'affectation est valide false sinon
 	 */
-	public boolean isValideV2(Node node){
+	public boolean isValideV2(Node2 Node2){
 		
-		Node nodeCopy = new Node(node);
-		int lastVal=node.getDomains().size()-1;
+		Node2 Node2Copy = new Node2(Node2);
+		int lastVal=Node2.getDomains().size()-1;
 		if (lastVal>0){ 
-			Domain domainLast=nodeCopy.get(lastVal);
-			int val = domainLast.getValeurs().first(); 
-			for (int i=0;i<nodeCopy.getDomains().size()-1;++i){
-				Domain d=nodeCopy.get(i);
-				int val2=d.getValeurs().first();
+			Domain2 Domain2Last=Node2Copy.get(lastVal);
+			int val = Domain2Last.getValeurs().getFirst(); 
+			for (int i=0;i<Node2Copy.getDomains().size()-1;++i){
+				Domain2 d=Node2Copy.get(i);
+				int val2=d.getValeurs().getFirst();
 				
 				//Test Colonne pas dans le même colonne
 				if(val2==val){
@@ -76,30 +77,30 @@ public class BackTrackingQueen2 {
 	
 	/**
 	 * @brief Première version du Backtracking pour le problème des queens. Fonction récursive
-	 * @param n = le node
+	 * @param n = le Node2
 	 * @return int : le nombre de solution trouvé
 	 * @warning la fonction fait elle même l'affichage et la compléxité est très mauvaise
 	 * 
 	 */
-	public int backTrackingQueenPrune(Node n){
-		Node copyNode= new Node(n);
-		Node copyNode2= new Node();
-		Domain domain= new Domain();
-		TreeSet<Integer> valeurs= new TreeSet<Integer>();
-		TreeSet<Integer> tree= new TreeSet<Integer>();
+	public int backTrackingQueenPrune2(Node2 n){
+		Node2 copyNode= new Node2(n);
+		Node2 copyNode2= new Node2();
+		Domain2 Domain2= new Domain2();
+		LinkedList<Integer> valeurs= new LinkedList<Integer>();
+		LinkedList<Integer> tree= new LinkedList<Integer>();
 		boolean solution=true;
 		int compteur=0;
 		int compteur2=0;
 		int nbSolution=0;
 		
 		while((solution)&&(compteur<copyNode.getDomains().size())){
-			//Si la taille du domain est de 1 alors on a plus besoin de travailler dessus on passe au suivant
+			//Si la taille du Domain2 est de 1 alors on a plus besoin de travailler dessus on passe au suivant
 			//copyNode.getDomains().get(compteur).getValeurs().size()==1
 			if(copyNode.get(compteur).getValeurs().size()==1){
 				copyNode2.add(copyNode.get(compteur));
 				++compteur;
 			}else{
-				solution=false; // Un des domaines a encore plusieur valeurs -> on est pas encore arriver à une solution
+				solution=false; // Un des Domain2es a encore plusieur valeurs -> on est pas encore arriver à une solution
 			}
 			
 		}
@@ -110,22 +111,22 @@ public class BackTrackingQueen2 {
 			
 		}else{
 			
-			//On copy les valeurs du premier domaine de la liste qui à encore une taille supérieur à 1
+			//On copy les valeurs du premier Domain2e de la liste qui à encore une taille supérieur à 1
 			valeurs=copyNode.get(compteur).getValeurs();
 			for (Integer val : valeurs){
 				compteur2=0;
 				tree.add(val);
-				domain.setValeurs(tree);
-				copyNode2.add(domain);
+				Domain2.setValeurs(tree);
+				copyNode2.add(Domain2);
 				if(isValideV2(copyNode2)){//Cette combinaison marche pour l'instant on avance
-					for (int i=compteur+1;i<copyNode.getDomains().size();++i){ // Ajout des autres domaines
+					for (int i=compteur+1;i<copyNode.getDomains().size();++i){ // Ajout des autres Domain2es
 						copyNode2.add(copyNode.get(i));
 						++compteur2;	
 					}
-					// On reduit un domaine de plus à la taille de 1 on fait l'apelle recursif
-					nbSolution+=backTrackingQueenPrune(copyNode2);
+					// On reduit un Domain2e de plus à la taille de 1 on fait l'apelle recursif
+					nbSolution+=backTrackingQueenPrune2(copyNode2);
 					
-					for (int i=0;i<compteur2;++i){// On suprime les domaines ajouter dans le foreach précedent
+					for (int i=0;i<compteur2;++i){// On suprime les Domain2es ajouter dans le foreach précedent
 						copyNode2.removeLast();
 					}
 				}
@@ -142,10 +143,10 @@ public class BackTrackingQueen2 {
 	
 	
 	public static void main(String[] args) {
-		BackTrackingQueen backQ= new BackTrackingQueen();
-		Domain d= new Domain();
-		Node n = new Node();
-		TreeSet<Integer> tree= new TreeSet<Integer>();
+		BackTrackingQueen2 backQ= new BackTrackingQueen2();
+		Domain2 d= new Domain2();
+		Node2 n = new Node2();
+		LinkedList<Integer> tree= new LinkedList<Integer>();
 		double chrono=System.currentTimeMillis();
 		
 		int nbCase=5;// Les dimensions de l'échequier
@@ -161,12 +162,13 @@ public class BackTrackingQueen2 {
 		System.out.println("Taille de l'échéquier "+nbCase);
 		
 		
-		System.out.println(backQ.backTrackingQueenPrune(n)+" solutions trouvé");
+		System.out.println(backQ.backTrackingQueenPrune2(n)+" solutions trouvé");
 		chrono=System.currentTimeMillis()-chrono;
 		chrono=chrono/1000;
 		System.out.println("En "+chrono+" secondes");
 		
 
 	}
+
 
 }
