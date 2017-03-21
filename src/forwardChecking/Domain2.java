@@ -7,16 +7,20 @@ import Interface.IDomain;
 public class Domain2 implements  IDomain {
 
 	private LinkedList<Integer> valeurs;
+	private int ligne; // Pour éviter de devoir jouer avec des compteurs
 	
 
 	public Domain2() {
 		super();
 		valeurs= new LinkedList<Integer>();
+		ligne=0;
 	}
 
 	public Domain2(LinkedList<Integer> valeurs) {
 		super();
 		this.valeurs = valeurs;
+		ligne=0;
+
 	}
 
 	
@@ -50,6 +54,14 @@ public class Domain2 implements  IDomain {
 	public void setValeurs(LinkedList<Integer> valeurs) {
 		this.valeurs=valeurs;
 		
+	}
+
+	public int getLigne() {
+		return ligne;
+	}
+
+	public void setLigne(int ligne) {
+		this.ligne = ligne;
 	}
 
 }

@@ -147,7 +147,6 @@ public class BackTrackingTreeSetQueen {
 	
 	public static void main(String[] args) {
 		BackTrackingTreeSetQueen backQ= new BackTrackingTreeSetQueen();
-		Domain d= new Domain();
 		Node n = new Node();
 		TreeSet<Integer> tree= new TreeSet<Integer>();
 		double chrono=System.currentTimeMillis();
@@ -159,6 +158,7 @@ public class BackTrackingTreeSetQueen {
 		}
 		
 		for (int i=0;i<nbCase;++i){
+			Domain d= new Domain();
 			d.setValeurs(tree);
 			n.add(d);
 		}

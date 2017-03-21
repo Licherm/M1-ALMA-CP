@@ -10,35 +10,6 @@ import backTracking.Node;
 public class BackTrackingQueen2 {
 
 
-	/**
-	 * @brief test si une affectation donnÃ©e est possible
-	 * @param Node2 = Node2 ou chacun des Domains est rÃ©duit Ã  une seule valeur
-	 *  
-	 * @return true si l'affectation est valide false sinon
-	 */
-	public boolean isValide(Node2 Node2){
-		
-		Node2 Node2Copy = new Node2(Node2);
-		for (int i=0;i<Node2Copy.getDomains().size();++i){
-			Domain2 d=Node2Copy.get(i);
-			int val1=d.getValeurs().getFirst();
-			for (int n=i+1;n<Node2Copy.getDomains().size();++n){
-				Domain2 d2=Node2Copy.get(n);
-				int val2=d2.getValeurs().getFirst();
-				//Test Colonne pas dans le même colonne
-				if(val1==val2){
-					return false; // si dans la même colonne
-				}
-				
-				//Test la diagonale
-				if (Math.abs(val1-val2)==n-i){
-					return false; // sur la diagonale
-				}
-			}			
-		}
-		return true;
-		
-	}
 	
 	
 	/**
@@ -50,21 +21,22 @@ public class BackTrackingQueen2 {
 	public boolean isValideV2(Node2 node){
 		
 		Node2 Node2Copy = new Node2(node);
-		int lastVal=node.getDomains().size()-1;
-		if (lastVal>0){ 
-			Domain2 Domain2Last=Node2Copy.get(lastVal);
-			int val = Domain2Last.getValeurs().getFirst(); 
+		if (node.getDomains().size()-1>0){ 
+			Domain2 Domain2Last=Node2Copy.get(node.getDomains().size()-1);
+			int val = Domain2Last.getValeurs().getFirst();
+			int lastValLigne=Domain2Last.getLigne();
 			for (int i=0;i<Node2Copy.getDomains().size()-1;++i){
 				Domain2 d=Node2Copy.get(i);
 				int val2=d.getValeurs().getFirst();
+				int ligneActuelle=d.getLigne();
+				//System.out.println("d ="+d.getLigne());
 				
 				//Test Colonne pas dans le même colonne
 				if(val2==val){
 					return false; // si dans la même colonne
 				}
-					
 				//Test la diagonale
-				if (Math.abs(val2-val)==lastVal-i){
+				if (Math.abs(val2-val)==(lastValLigne-ligneActuelle)){
 					return false; // sur la diagonale
 				}
 							
@@ -90,7 +62,7 @@ public class BackTrackingQueen2 {
 			if(val==lastValAdd){
 				check=false;
 			}
-			
+			// TODO : ce if provoque le bug trouver pourquoi
 			if(Math.abs(lastValAdd-val)==index){
 				check =false;
 			}
@@ -99,9 +71,7 @@ public class BackTrackingQueen2 {
 				domainMod.addLast(val);
 			}
 		}
-		
-		
-		
+		domainMod.setLigne(domain.getLigne());
 		return domainMod;
 	}
 	
@@ -117,7 +87,6 @@ public class BackTrackingQueen2 {
 	public int backTrackingQueenPrune2(Node2 n){
 		Node2 copyNode= new Node2(n);
 		Node2 copyNode2= new Node2();
-		Node2 copyNode3= new Node2();
 		Domain2 domain2= new Domain2();
 		LinkedList<Integer> valeurs= new LinkedList<Integer>();
 		LinkedList<Integer> tree= new LinkedList<Integer>();
@@ -125,13 +94,12 @@ public class BackTrackingQueen2 {
 		int compteur=0;
 		int compteur2=0;
 		int nbSolution=0;
-		
+		int ligne=0;
 		while((solution)&&(compteur<copyNode.getDomains().size())){
 			//Si la taille du Domain2 est de 1 alors on a plus besoin de travailler dessus on passe au suivant
 			//copyNode.getDomains().get(compteur).getValeurs().size()==1
 			if(copyNode.get(compteur).getValeurs().size()==1){
 				copyNode2.add(copyNode.get(compteur));
-				copyNode3.add(copyNode.get(compteur));
 				++compteur;
 			}else{
 				solution=false; // Un des Domain2es a encore plusieur valeurs -> on est pas encore arriver à une solution
@@ -139,40 +107,40 @@ public class BackTrackingQueen2 {
 			
 		}
 		if(solution){
-			System.out.println("Une solution !");
-			System.out.println(n.toStringQueen());
+			//System.out.println("Une solution !");
+			//System.out.println(n.toStringQueen());
 			return ++nbSolution;
 			
 		}else{
 			
 			//On copy les valeurs du premier Domaine de la liste qui à encore une taille supérieur à 1
 			valeurs=copyNode.get(compteur).getValeurs();
+			ligne=copyNode.get(compteur).getLigne();
 			for (Integer val : valeurs){
 				boolean valide = true; // Passe à false si l'un des domaines est réduit à 0 par le forward check
 				boolean valide2 = true;
 				compteur2=0;
 				tree.add(val);
 				domain2.setValeurs(tree);
+				domain2.setLigne(ligne);
 				copyNode2.add(domain2);
-				copyNode3.add(domain2);
 				int i=compteur+1;
 				if(isValideV2(copyNode2)){//Cette combinaison marche pour l'instant on avance
 					//for (int i=compteur+1;i<copyNode.getDomains().size();++i){
 					while ((i<copyNode.getDomains().size())&&(valide)&&(valide2)){
 						//Je foward check ici
 						//copyNode2.add(copyNode.get(i));
-						Domain2 domainTempo =fowardCheck(val, compteur2+1,copyNode.get(i)); // compteur2+1 le nombrede ligne d'écart
+						Domain2 domainTempo =fowardCheck(val,copyNode.getLigneAt(i)-ligne,copyNode.get(i)); // compteur2+1 le nombrede ligne d'écart
 						if(domainTempo.getValeurs().size()<=0){
 							valide = false;							
 						}else{
 							copyNode2.add(domainTempo);
-							copyNode3.add(domainTempo);
-							if((domainTempo.getValeurs().size()==1)){
-								valide2=isValideV2(copyNode3);
-								}
 							++compteur2;
+							if((domainTempo.getValeurs().size()==1)){
+									valide2=isValideV2(copyNode2);
+								}
+							
 							++i;
-							copyNode3.removeLast();
 						}
 						
 					}
@@ -187,7 +155,6 @@ public class BackTrackingQueen2 {
 					}
 				}
 				copyNode2.removeLast();// Enlève pour essayer la prochaine valeur
-				//copyNode3.removeLast();
 				tree.clear();				
 			}
 		}
@@ -201,19 +168,23 @@ public class BackTrackingQueen2 {
 	
 	public static void main(String[] args) {
 		BackTrackingQueen2 backQ= new BackTrackingQueen2();
-		Domain2 d= new Domain2();
+		//Domain2 d= new Domain2();
 		Node2 n = new Node2();
 		LinkedList<Integer> tree= new LinkedList<Integer>();
 		double chrono=System.currentTimeMillis();
 		
-		int nbCase=5;// Les dimensions de l'échequier
+		int nbCase=8;// Les dimensions de l'échequier
 		
 		for (int i=0;i<nbCase;++i){
 			tree.add(i+1);
 		}
 		
 		for (int i=0;i<nbCase;++i){
+			Domain2 d= new Domain2();
+
 			d.setValeurs(tree);
+			d.setLigne(i+1);
+			System.out.println(d.getLigne());
 			n.add(d);
 		}
 		System.out.println("Taille de l'échéquier "+nbCase);

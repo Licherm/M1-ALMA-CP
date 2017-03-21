@@ -147,18 +147,19 @@ public class BackTrackingQueen {
 	
 	public static void main(String[] args) {
 		BackTrackingQueen backQ= new BackTrackingQueen();
-		Domain2 d= new Domain2();
+		
 		Node2 n = new Node2();
 		LinkedList<Integer> tree= new LinkedList<Integer>();
 		double chrono=System.currentTimeMillis();
 		
-		int nbCase=8;// Les dimensions de l'échequier
+		int nbCase=7;// Les dimensions de l'échequier
 		
 		for (int i=0;i<nbCase;++i){
 			tree.add(i+1);
 		}
 		
 		for (int i=0;i<nbCase;++i){
+			Domain2 d= new Domain2();
 			d.setValeurs(tree);
 			n.add(d);
 		}

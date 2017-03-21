@@ -56,6 +56,15 @@ private ArrayList<Domain2> domains;
 	public Domain2 get(int index){
 		return this.domains.get(index);
 	}
+	/**
+	 * @brief Va chercher la ligne du domaine à un indice précis
+	 * @param index = l'indice du domaine
+	 *  
+	 * @return int : la ligne du domaine à l'indice donnée
+	 */
+	public int getLigneAt(int index){
+		return this.domains.get(index).getLigne();
+	}
 
 	/* (non-Javadoc)
 	 * @see first.INode#getDomains()
