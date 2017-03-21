@@ -1,17 +1,14 @@
-package first;
+package forwardChecking;
 
-import java.util.ArrayList;
-import java.util.Timer;
 import java.util.TreeSet;
 
-import com.sun.org.apache.bcel.internal.generic.CPInstruction;
+import first.BackTrackingQueen;
+import first.Domain;
+import first.Node;
 
-import Interface.IDomain;
-import Interface.INode;
+public class BackTrackingQueen2 {
 
-public class BackTrackingQueen {
-	
-	
+
 	/**
 	 * @brief test si une affectation donnée est possible
 	 * @param node = node ou chacun des domains est réduit à une seule valeur
@@ -171,9 +168,5 @@ public class BackTrackingQueen {
 		
 
 	}
-
-	
-	
-	
 
 }

@@ -1,4 +1,4 @@
-package second;
+package forwardChecking;
 import java.util.LinkedList;
 import java.util.TreeSet;
 

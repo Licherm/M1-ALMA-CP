@@ -1,4 +1,4 @@
-package second;
+package forwardChecking;
 import Interface.IDomain;
 import Interface.INode;
 import first.Domain;
@@ -26,7 +26,7 @@ private ArrayList<Domain2> domains;
 	 * @see first.INode#replace(Interface.IDomain, first.Domain)
 	 */
 
-	public void replace( IDomain old, IDomain newD){
+	public void replace( IDomain old, Domain2 newD){
 		int i;
 		i=this.domains.indexOf(old);
 		
@@ -79,7 +79,7 @@ private ArrayList<Domain2> domains;
 		String s="";
 		int i=1;
 		for (Domain2 d : this.domains){
-			s+="La queen de la ligne "+i+" se trouve en position "+d.getValeurs().first()+'\n';
+			s+="La queen de la ligne "+i+" se trouve en position "+d.getValeurs().getFirst()+'\n';
 			++i;
 		}
 		return s;
