@@ -20,7 +20,7 @@ public class BackTrackingQueen {
 	 */
 	public boolean isValide(Node node){
 		
-		INode nodeCopy = new Node(node);
+		Node nodeCopy = new Node(node);
 		for (int i=0;i<nodeCopy.getDomains().size();++i){
 			Domain d=nodeCopy.get(i);
 			int val1=d.getValeurs().first();
@@ -51,7 +51,7 @@ public class BackTrackingQueen {
 	 */
 	public boolean isValideV2(Node node){
 		
-		INode nodeCopy = new Node(node);
+		Node nodeCopy = new Node(node);
 		int lastVal=node.getDomains().size()-1;
 		if (lastVal>0){ 
 			Domain domainLast=nodeCopy.get(lastVal);
@@ -85,7 +85,7 @@ public class BackTrackingQueen {
 	 * 
 	 */
 	public int backTrackingQueenPrune(Node n){
-		INode copyNode= new Node(n);
+		Node copyNode= new Node(n);
 		Node copyNode2= new Node();
 		Domain domain= new Domain();
 		TreeSet<Integer> valeurs= new TreeSet<Integer>();
@@ -150,7 +150,7 @@ public class BackTrackingQueen {
 		TreeSet<Integer> tree= new TreeSet<Integer>();
 		double chrono=System.currentTimeMillis();
 		
-		int nbCase=13;// Les dimensions de l'échequier
+		int nbCase=4;// Les dimensions de l'échequier
 		
 		for (int i=0;i<nbCase;++i){
 			tree.add(i+1);

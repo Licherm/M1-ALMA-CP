@@ -6,7 +6,7 @@ import first.Domain;
 
 public interface INode {
 
-	void replace(IDomain old, Domain newD);
+	void replace(IDomain old, IDomain newD);
 
 	void add(Domain d);
 
