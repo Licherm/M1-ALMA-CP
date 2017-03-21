@@ -3,16 +3,16 @@ package forwardChecking;
 import java.util.LinkedList;
 import java.util.TreeSet;
 
-import first.BackTrackingQueen;
-import first.Domain;
-import first.Node;
+import backTracking.BackTrackingQueen;
+import backTracking.Domain;
+import backTracking.Node;
 
 public class BackTrackingQueen2 {
 
 
 	/**
 	 * @brief test si une affectation donnÃ©e est possible
-	 * @param Node2 = Node2 ou chacun des Domain2s est rÃ©duit Ã  une seule valeur
+	 * @param Node2 = Node2 ou chacun des Domains est rÃ©duit Ã  une seule valeur
 	 *  
 	 * @return true si l'affectation est valide false sinon
 	 */
@@ -75,6 +75,8 @@ public class BackTrackingQueen2 {
 	}
 	
 	
+	
+	
 	/**
 	 * @brief Première version du Backtracking pour le problème des queens. Fonction récursive
 	 * @param n = le Node2
@@ -111,7 +113,7 @@ public class BackTrackingQueen2 {
 			
 		}else{
 			
-			//On copy les valeurs du premier Domain2e de la liste qui à encore une taille supérieur à 1
+			//On copy les valeurs du premier Domaine de la liste qui à encore une taille supérieur à 1
 			valeurs=copyNode.get(compteur).getValeurs();
 			for (Integer val : valeurs){
 				compteur2=0;
@@ -119,11 +121,12 @@ public class BackTrackingQueen2 {
 				Domain2.setValeurs(tree);
 				copyNode2.add(Domain2);
 				if(isValideV2(copyNode2)){//Cette combinaison marche pour l'instant on avance
-					for (int i=compteur+1;i<copyNode.getDomains().size();++i){ // Ajout des autres Domain2es
+					for (int i=compteur+1;i<copyNode.getDomains().size();++i){ // Ajout des autres Domaines
+						//Je foward check ici
 						copyNode2.add(copyNode.get(i));
 						++compteur2;	
 					}
-					// On reduit un Domain2e de plus à la taille de 1 on fait l'apelle recursif
+					// On a reduit un Domaine de plus à la taille de 1 on fait l'apelle recursif
 					nbSolution+=backTrackingQueenPrune2(copyNode2);
 					
 					for (int i=0;i<compteur2;++i){// On suprime les Domain2es ajouter dans le foreach précedent

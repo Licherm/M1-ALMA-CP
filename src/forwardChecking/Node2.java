@@ -1,8 +1,8 @@
 package forwardChecking;
 import Interface.IDomain;
 import Interface.INode;
-import first.Domain;
-import first.Node;
+import backTracking.Domain;
+import backTracking.Node;
 
 import java.util.ArrayList;
 

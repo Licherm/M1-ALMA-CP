@@ -2,7 +2,7 @@ package Interface;
 
 import java.util.ArrayList;
 
-import first.Domain;
+import backTracking.Domain;
 
 public interface INode {
 
