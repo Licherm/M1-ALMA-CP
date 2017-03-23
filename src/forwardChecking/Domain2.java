@@ -4,7 +4,7 @@ import java.util.TreeSet;
 
 import Interface.IDomain;
 
-public class Domain2 implements  IDomain {
+public class Domain2 implements  IDomain, Comparable<Domain2> {
 
 	private LinkedList<Integer> valeurs;
 	private int ligne; // Pour éviter de devoir jouer avec des compteurs
@@ -62,6 +62,12 @@ public class Domain2 implements  IDomain {
 
 	public void setLigne(int ligne) {
 		this.ligne = ligne;
+	}
+
+	@Override
+	public int compareTo(Domain2 arg0) {
+		
+		return ((Integer)this.valeurs.size()).compareTo((Integer)arg0.valeurs.size());
 	}
 
 }

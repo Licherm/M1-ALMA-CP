@@ -5,6 +5,8 @@ import backTracking.Domain;
 import backTracking.Node;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 public class Node2 {
 
@@ -93,6 +95,10 @@ private ArrayList<Domain2> domains;
 		}
 		return s;
 		
+	}
+	
+	public void sortDomaines(){
+		Collections.sort(this.domains);
 	}
 
 }
