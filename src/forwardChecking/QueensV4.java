@@ -93,7 +93,7 @@ public class QueensV4 {
 		
 		double chrono=System.currentTimeMillis();
 
-		System.out.println("BackTracking sur "+NB_QUEENS+" reines");
+		System.out.println("ForwardChecking avec "+NB_QUEENS+" reines");
 		sols = branchAndPrune(node, domain);
 		System.out.println(sols+" solutions trouvées.");
 		chrono=System.currentTimeMillis()-chrono;

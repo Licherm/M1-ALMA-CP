@@ -81,7 +81,7 @@ public class QueensV3 {
 		node.add(0);
 		double chrono=System.currentTimeMillis();
 
-		System.out.println("BackTracking sur "+NB_QUEENS+" reines");
+		System.out.println("BackTracking avec "+NB_QUEENS+" reines");
 		sols = branchAndPrune(node);
 		System.out.println(sols+" solutions trouvées.");
 		chrono=System.currentTimeMillis()-chrono;
