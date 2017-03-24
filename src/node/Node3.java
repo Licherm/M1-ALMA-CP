@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import Interface.IDomain;
-import forwardChecking.Domain2;
-import forwardChecking.Node2;
 import domain.*;
 
 public class Node3 {

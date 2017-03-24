@@ -1,4 +1,4 @@
-package forwardChecking;
+package domain;
 import java.util.LinkedList;
 import java.util.TreeSet;
 

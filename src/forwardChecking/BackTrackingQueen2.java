@@ -5,8 +5,10 @@ import java.util.LinkedList;
 import java.util.TreeSet;
 
 import backTracking.BackTrackingQueen;
-import backTracking.Domain;
-import backTracking.Node;
+import domain.Domain;
+import domain.Domain2;
+import node.Node;
+import node.Node2;
 
 public class BackTrackingQueen2 {
 

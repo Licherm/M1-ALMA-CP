@@ -1,18 +1,11 @@
-
 package carreMagique;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 
-import backTracking.BackTrackingQueen;
-import domain.*;
-import node.*;
+import domain.Domain3;
+import node.Node3;
 
-public class BackTrackingCarre {
-
-
-
-
+public class ForwardCarre {
 
 	/**
 	 * @brief test si une affectation donnÃ©e est possible. Version amélioré sans vérification inutiles.
@@ -209,7 +202,7 @@ public class BackTrackingCarre {
 	 * @warning la fonction fait elle même l'affichage et la compléxité est très mauvaise
 	 * 
 	 */
-	public int pruneCarreBT(Node3 n){
+	public int pruneCarreForward(Node3 n){
 		Node3 copyNode= new Node3(n);
 		Node3 copyNode2= new Node3();
 		Domain3 domain3= new Domain3();
@@ -257,7 +250,7 @@ public class BackTrackingCarre {
 						++compteur2;	
 					}
 					// On reduit un Domain3e de plus à la taille de 1 on fait l'apelle recursif
-					nbSolution+=pruneCarreBT(copyNode2);
+					nbSolution+=pruneCarreForward(copyNode2);
 
 					for (int i=0;i<compteur2;++i){// On suprime les Domain3es ajouter dans le foreach précedent
 						copyNode2.removeLast();

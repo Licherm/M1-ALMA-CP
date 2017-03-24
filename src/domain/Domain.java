@@ -1,4 +1,4 @@
-package backTracking;
+package domain;
 
 import java.util.TreeSet;
 

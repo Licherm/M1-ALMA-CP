@@ -3,8 +3,8 @@ package fowardCheckingAndTrie;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-import forwardChecking.Domain2;
-import forwardChecking.Node2;
+import domain.Domain2;
+import node.Node2;
 
 public class ForwardAndTrieQueen {
 

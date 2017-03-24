@@ -1,9 +1,10 @@
-package backTracking;
+package node;
 
 import java.util.ArrayList;
 
 import Interface.IDomain;
 import Interface.INode;
+import domain.Domain;
 
 public class Node  {
 	

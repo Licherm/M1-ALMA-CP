@@ -9,6 +9,8 @@ import com.sun.org.apache.bcel.internal.generic.CPInstruction;
 
 import Interface.IDomain;
 import Interface.INode;
+import domain.Domain;
+import node.Node;
 
 public class BackTrackingTreeSetQueen {
 	

@@ -3,7 +3,6 @@ package domain;
 import java.util.LinkedList;
 
 import Interface.IDomain;
-import forwardChecking.Domain2;
 
 public class Domain3  implements  IDomain, Comparable<Domain3>{
 

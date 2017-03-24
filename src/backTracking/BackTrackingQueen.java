@@ -7,8 +7,10 @@ import java.util.LinkedList;
 
 import com.sun.org.apache.bcel.internal.generic.CPInstruction;
 import forwardChecking.*;
+import node.Node2;
 import Interface.IDomain;
 import Interface.INode;
+import domain.Domain2;
 
 public class BackTrackingQueen {
 	
