@@ -1,5 +1,6 @@
 package forwardChecking;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.TreeSet;
 
@@ -99,7 +100,6 @@ public class BackTrackingQueen2 {
 			//copyNode.getDomains().get(compteur).getValeurs().size()==1
 			if(copyNode.get(compteur).getValeurs().size()==1){
 				copyNode2.add(copyNode.get(compteur));
-				copyNode3.add(copyNode.get(compteur));
 				++compteur;
 			}else{
 				solution=false; // Un des Domaines a encore plusieur valeurs -> on est pas encore arriver à une solution
@@ -115,6 +115,7 @@ public class BackTrackingQueen2 {
 		}else{
 			
 			//On copy les valeurs du premier Domaine de la liste qui à encore une taille supérieur à 1
+			copyNode3.setDomains(new ArrayList<Domain2>(copyNode2.getDomains()));
 			valeurs=copyNode.get(compteur).getValeurs();
 			ligne=copyNode.getLigneAt(compteur);//On oublie pas de set la ligne
 			for (Integer val : valeurs){

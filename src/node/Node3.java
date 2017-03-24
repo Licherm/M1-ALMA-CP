@@ -1,34 +1,41 @@
-package forwardChecking;
-import Interface.IDomain;
-import Interface.INode;
-import backTracking.Domain;
-import backTracking.Node;
+package node;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 
-public class Node2 {
+import Interface.IDomain;
+import forwardChecking.Domain2;
+import forwardChecking.Node2;
+import domain.*;
 
-private ArrayList<Domain2> domains;
+public class Node3 {
+private ArrayList<Domain3> domains;
+private int nbCase;
+private int nbMagique; // Le nombre au quel la somme de chaque ligne, colonne, diagonal doit être égal
 	
-	public Node2(){
-		this.domains= new ArrayList<Domain2>();
+	public Node3(){
+		this.domains= new ArrayList<Domain3>();
+		nbMagique=0;
+		nbCase=0;
 	}
 	
-	public Node2(ArrayList<Domain2> domains){
+	public Node3(ArrayList<Domain3> domains){
 		this.domains=domains;
+		nbMagique=0;
+		nbCase=0;
 	}
 	
-	public Node2(Node2 n){
+	public Node3(Node3 n){
 		this.domains=n.domains;
+		nbMagique=n.nbCase;
+		nbCase=n.nbMagique;
 	}
 
 	/* (non-Javadoc)
 	 * @see first.INode#replace(Interface.IDomain, first.Domain)
 	 */
 
-	public void replace( IDomain old, Domain2 newD){
+	public void replace( IDomain old, Domain3 newD){
 		int i;
 		i=this.domains.indexOf(old);
 		
@@ -39,7 +46,7 @@ private ArrayList<Domain2> domains;
 	 * @see first.INode#add(first.Domain)
 	 */
 
-	public void add(Domain2 d){
+	public void add(Domain3 d){
 		this.domains.add(d);
 	}
 	
@@ -55,7 +62,7 @@ private ArrayList<Domain2> domains;
 	 * @see first.INode#get(int)
 	 */
 
-	public Domain2 get(int index){
+	public Domain3 get(int index){
 		return this.domains.get(index);
 	}
 	/**
@@ -72,33 +79,59 @@ private ArrayList<Domain2> domains;
 	 * @see first.INode#getDomains()
 	 */
 
-	public ArrayList<Domain2> getDomains() {
+	public ArrayList<Domain3> getDomains() {
 		return domains;
 	}
 
 	/* (non-Javadoc)
 	 * @see first.INode#setDomains(java.util.ArrayList)
 	 */
-	public void setDomains(ArrayList<Domain2> domains) {
+	public void setDomains(ArrayList<Domain3> domains) {
 		this.domains = domains;
 	}
 	
+	public int getNbCase() {
+		return nbCase;
+	}
+
+	public void setNbCase(int nbCase) {
+		this.nbCase = nbCase;
+	}
+
+	public int getNbMagique() {
+		return nbMagique;
+	}
+
+	public void setNbMagique(int nbMagique) {
+		this.nbMagique = nbMagique;
+	}
+	
+	public void calculeNbMagique(int n){
+		this.nbMagique=(int) ((n*(Math.pow(n,2)+1))/2);
+	}
+	
+
 	/* (non-Javadoc)
 	 * @see first.INode#toStringQueen()
 	 */
-	public String toStringQueen(){
+	public String toStringCarreMagique(){
 		String s="";
 		int i=1;
-		for (Domain2 d : this.domains){
-			s+="La queen de la ligne "+d.getLigne()+" se trouve en position "+d.getValeurs().getFirst()+'\n';
+		for (Domain3 d : this.domains){
+			
+			s+=d.getValeurs().getFirst()+"|";
+			if (d.getColonne()==nbCase){
+				s+='\n';
+			}
 			++i;
 		}
 		return s;
+		
+		
 		
 	}
 	
 	public void sortDomaines(){
 		Collections.sort(this.domains);
 	}
-
 }
