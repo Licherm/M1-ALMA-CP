@@ -11,7 +11,7 @@ public class QueensV5 {
 	public static int branchAndPrune(LinkedList<Integer> node, ArrayList<Boolean> domain) {
 		int sols = 0;
 		int value; // valeur a pruner si valide
-		int domStart = node.size() * NB_QUEENS;
+		int domStart = node.size() * NB_QUEENS; // index du domaine a étudier
 		int domEnd = (node.size() + 1) * NB_QUEENS - 1;
 		int domInd, valInd, diagInd; // valeurs temporaires pour les calculs du pruning
 		
@@ -36,8 +36,8 @@ public class QueensV5 {
 				} else {
 					// pruning domains
 					domInd = workingNode.size();
-					// surement améliorable pour qu'il s'arrête si un domaine se retrouve vide
-					// mais ya pas de bonne solution qui m'est venue a l'esprit
+					// peut etre améliorable pour qu'il s'arrête si un domaine se retrouve vide
+					// mais la solution a laquelle j'ai pensé est moins efficace
 					while (domInd < NB_QUEENS) {
 						
 						// une seule reine par colonne
