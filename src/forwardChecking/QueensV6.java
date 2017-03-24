@@ -4,21 +4,25 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
-public class QueensV5 {
+public class QueensV6 {
 	private static final int NB_QUEENS = 14;
 	private static final int DOM_SIZE = NB_QUEENS * NB_QUEENS;
 	
-	public static int branchAndPrune(LinkedList<Integer> node, ArrayList<Boolean> domain) {
+	public static int branchAndPrune(LinkedList<Integer> node, ArrayList<Boolean> domain, ArrayList<Integer> domSizes) {
 		int sols = 0;
 		int value; // valeur a pruner si valide
 		int domStart = node.size() * NB_QUEENS;
 		int domEnd = (node.size() + 1) * NB_QUEENS - 1;
 		int domInd, valInd, diagInd; // valeurs temporaires pour les calculs du pruning
+		boolean stillValid;
 		
 		LinkedList<Integer> workingNode = node;
 		ArrayList<Boolean> workingDom = domain;
 		LinkedList<Integer> pruneSave = new LinkedList<Integer>();
 		// sauvegarde des valeur que l'on prune pour restaurer le noeud lors du changement de valeur
+		
+		ArrayList<Integer> workingSizes = domSizes;
+		// sauvegarde du nombre de valeurs restantes dans chaque domains, incrémenté au pruning décrémenté au backtracking
 		
 		ListIterator<Boolean> valIt = workingDom.listIterator(domStart);
 		ListIterator<Integer> pruneIt;
@@ -36,14 +40,16 @@ public class QueensV5 {
 				} else {
 					// pruning domains
 					domInd = workingNode.size();
-					// surement améliorable pour qu'il s'arrête si un domaine se retrouve vide
-					// mais ya pas de bonne solution qui m'est venue a l'esprit
-					while (domInd < NB_QUEENS) {
+					// il s'arrete si un domaine est vide mais le cout pour savoir si est domaine est vide
+					// est moins interressant que de bosser un peu plus sur des solutions pas possible.
+					stillValid = true;
+					while (domInd < NB_QUEENS && stillValid) {
 						
 						// une seule reine par colonne
 						valInd = domInd * NB_QUEENS + node.getLast();
 						if(workingDom.get(valInd)) {
 							workingDom.set(valInd, false);
+							workingSizes.set(domInd, workingSizes.get(domInd)-1);
 							pruneSave.add(valInd);
 						}
 						
@@ -52,6 +58,7 @@ public class QueensV5 {
 						if(diagInd >= domInd * NB_QUEENS) {
 							if(workingDom.get(diagInd)) {
 								workingDom.set(diagInd, false);
+								workingSizes.set(domInd, workingSizes.get(domInd)-1);
 								pruneSave.add(diagInd);
 							}
 						}
@@ -61,18 +68,28 @@ public class QueensV5 {
 						if(diagInd < (domInd + 1) * NB_QUEENS) {
 							if(workingDom.get(diagInd)) {
 								workingDom.set(diagInd, false);
+								workingSizes.set(domInd, workingSizes.get(domInd)-1);
 								pruneSave.add(diagInd);
 							}
 						}
+						
+						if(workingSizes.get(domInd) == 0) {
+							stillValid = false;
+						}
+						
 						++domInd;
 					}
 					// descente dans l'arbre de recherche
-					sols += branchAndPrune(workingNode, workingDom);
+					if (stillValid) {
+						sols += branchAndPrune(workingNode, workingDom, domSizes);
+					}
 					
 					// backtracking
 					pruneIt = pruneSave.listIterator();
 					while(pruneIt.hasNext()) {
-						workingDom.set(pruneIt.next(), true);
+						valInd = pruneIt.next();
+						workingDom.set(valInd, true);
+						workingSizes.set(valInd % NB_QUEENS, workingSizes.get(valInd % NB_QUEENS)+1);
 						pruneIt.remove();
 					}
 				}
@@ -115,17 +132,21 @@ public class QueensV5 {
 		int sols = 0;
 		LinkedList<Integer> node = new LinkedList<Integer>();
 		ArrayList<Boolean> domain = new ArrayList<Boolean>(DOM_SIZE);
+		ArrayList<Integer> domSizes = new ArrayList<Integer>(NB_QUEENS);
 		// le domaine est une matrice de booleens représentant l'échiquier avec les cases encore possibles (true) ou pas;
 		// elle est écrasée dans une arraylist pour avoir un seul index.
 		
 		for(int i = 0; i < DOM_SIZE; ++i) {
 			domain.add(true);
 		}
+		for(int i = 0; i < NB_QUEENS; ++i) {
+			domSizes.add(NB_QUEENS);
+		}
 		
 		double chrono=System.currentTimeMillis();
 
 		System.out.println("ForwardChecking avec "+NB_QUEENS+" reines");
-		sols = branchAndPrune(node, domain);
+		sols = branchAndPrune(node, domain, domSizes);
 		System.out.println(sols+" solutions trouvées.");
 		chrono=System.currentTimeMillis()-chrono;
 		chrono=chrono/1000;
