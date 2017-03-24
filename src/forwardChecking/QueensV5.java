@@ -22,6 +22,7 @@ public class QueensV5 {
 		// sauvegarde des valeur que l'on prune pour restaurer le noeud lors du changement de valeur
 		
 		ListIterator<Boolean> valIt = workingDom.listIterator(domStart);
+		ListIterator<Integer> pruneIt;
 		
 		while (valIt.hasNext() && valIt.nextIndex() <= domEnd) {
 			value = valIt.nextIndex() % NB_QUEENS;
@@ -70,11 +71,11 @@ public class QueensV5 {
 					sols += branchAndPrune(workingNode, workingDom);
 					
 					// backtracking
-					for(int val: pruneSave) {
-						workingDom.set(val, true);
+					pruneIt = pruneSave.listIterator();
+					while(pruneIt.hasNext()) {
+						workingDom.set(pruneIt.next(), true);
+						pruneIt.remove();
 					}
-					pruneSave.clear();
-					
 				}
 				workingNode.removeLast();
 			}
