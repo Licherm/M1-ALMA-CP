@@ -4,16 +4,17 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
-public class QueensV5 {
-	private static final int NB_QUEENS = 15;
+public class Queens1Sol {
+	private static final int NB_QUEENS = 32;
 	private static final int DOM_SIZE = NB_QUEENS * NB_QUEENS;
 	
-	public static int branchAndPrune(LinkedList<Integer> node, ArrayList<Boolean> domain) {
+	public static boolean branchAndPrune(LinkedList<Integer> node, ArrayList<Boolean> domain) {
 		int sols = 0;
 		int value; // valeur a pruner si valide
 		int domStart = node.size() * NB_QUEENS; // index du domaine a étudier
 		int domEnd = (node.size() + 1) * NB_QUEENS - 1;
 		int domInd, valInd, diagInd; // valeurs temporaires pour les calculs du pruning
+		boolean solution = false;
 		
 		LinkedList<Integer> workingNode = node;
 		ArrayList<Boolean> workingDom = domain;
@@ -23,7 +24,7 @@ public class QueensV5 {
 		ListIterator<Boolean> valIt = workingDom.listIterator(domStart);
 		ListIterator<Integer> pruneIt;
 		
-		while (valIt.hasNext() && valIt.nextIndex() <= domEnd) {
+		while (valIt.hasNext() && valIt.nextIndex() <= domEnd && !solution) {
 			value = valIt.nextIndex() % NB_QUEENS;
 			// récupération de la valeur a étudier (indice de colonne dans la matrice)
 			if (valIt.next()) {
@@ -31,8 +32,9 @@ public class QueensV5 {
 				// affectation de la premiere valeur du domaine
 				if ( workingNode.size() == NB_QUEENS ) {
 					// la combinaison est une solution
-					//System.out.println(printQueens(workingNode));
-					++sols;
+					System.out.println(printQueens(workingNode));
+					solution = true;
+					//++sols;
 				} else {
 					// pruning domains
 					domInd = workingNode.size();
@@ -66,8 +68,8 @@ public class QueensV5 {
 						}
 						++domInd;
 					}
-					// descente dans l'arbre de recherche
-					sols += branchAndPrune(workingNode, workingDom);
+					// avancée dans l'arbre de recherche
+					solution |= branchAndPrune(workingNode, workingDom);
 					
 					// backtracking
 					pruneIt = pruneSave.listIterator();
@@ -80,19 +82,17 @@ public class QueensV5 {
 			}
 		}
 			
-		return sols;
+		return solution;
 	}
 	
 	public static String printQueens(LinkedList<Integer> queens) {
 		ListIterator<Integer> valIt = queens.listIterator();
-		String printer = "";
+		String printer = "{ ";
 		while(valIt.hasNext()) {
-			printer += "ligne ";
-			printer += (valIt.nextIndex()+1);
-			printer += " colonne ";
 			printer += (valIt.next()+1);
-			printer += '\n';
+			if(valIt.hasNext()) printer += ", ";
 		}
+		printer += " }";
 		return printer;
 	}
 	
@@ -125,10 +125,10 @@ public class QueensV5 {
 		double chrono=System.currentTimeMillis();
 
 		System.out.println("ForwardChecking avec "+NB_QUEENS+" reines");
-		sols = branchAndPrune(node, domain);
-		System.out.println(sols+" solutions trouvées.");
+		branchAndPrune(node, domain);
+		//System.out.println("solution trouvées.");
 		chrono=System.currentTimeMillis()-chrono;
 		chrono=chrono/1000;
-		System.out.println("En "+chrono+" secondes");
+		System.out.println("Trouvée en "+chrono+" secondes");
 	}
 }
