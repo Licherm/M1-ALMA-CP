@@ -1,17 +1,13 @@
-package forwardChecking;
+package fowardCheckingAndTrie;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.TreeSet;
 
-import backTracking.BackTrackingQueen;
-import backTracking.Domain;
-import backTracking.Node;
+import forwardChecking.Domain2;
+import forwardChecking.Node2;
 
-public class BackTrackingQueen2 {
+public class ForwardAndTrieQueen {
 
-
-	
-	
 	/**
 	 * @brief test si une affectation donnÃ©e est possible. Version amélioré sans vérification inutiles.
 	 * @param Node2 = Node2 ou chacun des Domain2s est rÃ©duit Ã  une seule valeur
@@ -34,7 +30,7 @@ public class BackTrackingQueen2 {
 					return false; // si dans la même colonne
 				}
 				//Test la diagonale
-				if (Math.abs(val2-val)==(lastValLigne-ligneActuelle)){
+				if (Math.abs(val2-val)==Math.abs(lastValLigne-ligneActuelle)){
 					return false; // sur la diagonale
 				}
 							
@@ -54,8 +50,11 @@ public class BackTrackingQueen2 {
 	public Domain2 fowardCheck(int lastValAdd,int index, Domain2 domain){
 		
 		Domain2 domainMod = new Domain2(); // Le domain modifié renvoyé par la fonction
-		boolean check = true;
+		boolean check = false;
 		for (int val : domain.getValeurs() ){
+			if(!check){
+				
+			}
 			check=true;
 			if(val==lastValAdd){
 				check=false;
@@ -75,13 +74,14 @@ public class BackTrackingQueen2 {
 	
 	
 	/**
-	 *  Traitement du problème des queens avec forward checking.
-	 *  
+	 * Forward checking dans le quel on fait un trie sur les domaines d'un noeud. Les plus petit domaines
+	 * du noeud ce retrouve à être tester en premier. 
+	 *
 	 * @param n = le Node2
 	 * @return int : le nombre de solution trouvé
 	 * 
 	 */
-	public int backTrackingQueenPrune2(Node2 n){
+	public int forwardCheckingAndTrieQueen(Node2 n){
 		Node2 copyNode= new Node2(n);
 		Node2 copyNode2= new Node2();
 		Node2 copyNode3= new Node2();
@@ -94,6 +94,9 @@ public class BackTrackingQueen2 {
 		int compteur3=0;// Utile pendant le foward check
 		int nbSolution=0;
 		int ligne=0;
+		
+		copyNode.sortDomaines(); // On trie les domaines du noeud pour que les domaine de plus petite cardinalité soit tester en premier
+		
 		while((solution)&&(compteur<copyNode.getDomains().size())){
 			//Si la taille du Domain2 est de 1 alors on a plus besoin de travailler dessus on passe au suivant
 			//copyNode.getDomains().get(compteur).getValeurs().size()==1
@@ -113,7 +116,6 @@ public class BackTrackingQueen2 {
 			return ++nbSolution;
 			
 		}else{
-			
 			//On copy les valeurs du premier Domaine de la liste qui à encore une taille supérieur à 1
 			valeurs=copyNode.get(compteur).getValeurs();
 			ligne=copyNode.getLigneAt(compteur);//On oublie pas de set la ligne
@@ -129,11 +131,10 @@ public class BackTrackingQueen2 {
 				copyNode3.add(domain2);
 				int i=compteur+1;
 				if(isValideV2(copyNode2)){//Cette combinaison marche pour l'instant on avance
-					//for (int i=compteur+1;i<copyNode.getDomains().size();++i){
 					while ((i<copyNode.getDomains().size())&&(valide)&&(valide2)){
 						//Je foward check ici
 						//copyNode.getLigneAt(i)-ligne = le nombre de ligne d'écart pour la diagonal
-						Domain2 domainTempo =fowardCheck(val,copyNode.getLigneAt(i)-ligne,copyNode.get(i)); 
+						Domain2 domainTempo =fowardCheck(val,Math.abs(copyNode.getLigneAt(i)-ligne),copyNode.get(i)); 
 						if(domainTempo.getValeurs().size()<=0){
 							valide = false;							
 						}else{
@@ -156,11 +157,10 @@ public class BackTrackingQueen2 {
 						
 					}
 					if(valide&&valide2){
-						nbSolution+=backTrackingQueenPrune2(copyNode2);
+						nbSolution+=forwardCheckingAndTrieQueen(copyNode2);
 					}
 					
 					// On a reduit un Domaine de plus à la taille de 1 on fait l'apelle recursif
-					
 					for (int p=0;p<compteur2;++p){// On suprime les Domain2es ajouter dans le foreach précedent
 						copyNode2.removeLast();
 					}
@@ -182,7 +182,7 @@ public class BackTrackingQueen2 {
 	
 	
 	public static void main(String[] args) {
-		BackTrackingQueen2 backQ= new BackTrackingQueen2();
+		ForwardAndTrieQueen backQ= new ForwardAndTrieQueen();
 		//Domain2 d= new Domain2();
 		Node2 n = new Node2();
 		LinkedList<Integer> tree= new LinkedList<Integer>();
@@ -204,10 +204,11 @@ public class BackTrackingQueen2 {
 		System.out.println("Taille de l'échéquier "+nbCase);
 		
 		
-		System.out.println(backQ.backTrackingQueenPrune2(n)+" solutions trouvé");
+		System.out.println(backQ.forwardCheckingAndTrieQueen(n)+" solutions trouvé");
 		chrono=System.currentTimeMillis()-chrono;
 		chrono=chrono/1000;
 		System.out.println("En "+chrono+" secondes");
+
 		
 
 	}

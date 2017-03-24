@@ -24,6 +24,10 @@ private ArrayList<Domain2> domains;
 		this.domains=n.domains;
 	}
 	
+	public Node2(Node2 n, int i){
+		this.domains = new ArrayList<Domain2>(n.getDomains());
+	}
+	
 	/* (non-Javadoc)
 	 * @see first.INode#replace(Interface.IDomain, first.Domain)
 	 */
