@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.ListIterator;
 
 public class QueensV6 {
-	private static final int NB_QUEENS = 15;
+	private static final int NB_QUEENS = 6;
 	private static final int DOM_SIZE = NB_QUEENS * NB_QUEENS;
 	
 	public static int branchAndPrune(LinkedList<Integer> node, ArrayList<Boolean> domain, ArrayList<Integer> domSizes) {
