@@ -4,6 +4,12 @@ import java.util.TreeSet;
 
 import Interface.IDomain;
 
+/**
+ * Première version des domaines pour le problème des queens avec des treeSet
+ * 
+ * @author Casanova Mario  et Araya Montalvo
+ *
+ */
 public class Domain implements IDomain {
 
 	private TreeSet<Integer> valeurs;

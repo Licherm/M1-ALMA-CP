@@ -4,6 +4,12 @@ import java.util.TreeSet;
 
 import Interface.IDomain;
 
+/**
+ * Seconde version des domaines pour le problème des queens avec des ArrayList
+ * 
+ * @author Casanova Mario  et Araya Montalvo
+ *
+ */
 public class Domain2 implements  IDomain, Comparable<Domain2> {
 
 	private LinkedList<Integer> valeurs;

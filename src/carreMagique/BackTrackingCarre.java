@@ -8,6 +8,11 @@ import backTracking.BackTrackingQueen;
 import domain.*;
 import node.*;
 
+/**
+ * Version du backtraking du problème des carré magique.
+ * @author Casanova Mario  et Araya Montalvo
+ *
+ */
 public class BackTrackingCarre {
 
 
@@ -15,8 +20,9 @@ public class BackTrackingCarre {
 
 
 	/**
-	 * @brief test si une affectation donnÃ©e est possible. Version amélioré sans vérification inutiles.
-	 * @param Node3 = Node3 ou chacun des Domains est rÃ©duit Ã  une seule valeur
+	 *  Test si une affectation donnée est possible.
+	 *  
+	 * @param Node3 = Node3 ou chacun des Domains est réduit à  une seule valeur
 	 *  
 	 * @return true si l'affectation est valide false sinon
 	 */
@@ -206,7 +212,7 @@ public class BackTrackingCarre {
 	 * 
 	 * @param n = le Node3
 	 * @return int : le nombre de solution trouvé
-	 * @warning la fonction fait elle même l'affichage et la compléxité est très mauvaise
+	 * @warning la fonction peut faire elle même l'affichage si besoin (dé-commenté le sysout)
 	 * 
 	 */
 	public int pruneCarreBT(Node3 n){
@@ -221,13 +227,12 @@ public class BackTrackingCarre {
 		int nbSolution=0;
 
 		while((solution)&&(compteur<copyNode.getDomains().size())){
-			//Si la taille du Domain3 est de 1 alors on a plus besoin de travailler dessus on passe au suivant
-			//copyNode.getDomains().get(compteur).getValeurs().size()==1
+			//Si la taille du domain est de 1 alors on a plus besoin de travailler dessus on passe au suivant
 			if(copyNode.get(compteur).getValeurs().size()==1){
 				copyNode2.add(copyNode.get(compteur));
 				++compteur;
 			}else{
-				solution=false; // Un des Domain3es a encore plusieur valeurs -> on est pas encore arriver à une solution
+				solution=false; // Un des domaines a encore plusieur valeurs -> on est pas encore arriver à une solution
 			}
 
 		}
@@ -239,7 +244,7 @@ public class BackTrackingCarre {
 
 		}else{
 
-			//On copy les valeurs du premier Domain3e de la liste qui à encore une taille supérieur à 1
+			//On copy les valeurs du premier domaine de la liste qui à encore une taille supérieur à 1
 			valeurs=copyNode.get(compteur).getValeurs();
 			copyNode2.setNbCase(n.getNbCase());
 			copyNode2.setNbMagique(n.getNbMagique());
@@ -252,14 +257,14 @@ public class BackTrackingCarre {
 				domain3.setValeurs(tree);
 				copyNode2.add(domain3);
 				if(isValide(copyNode2)){//Cette combinaison marche pour l'instant on avance
-					for (int i=compteur+1;i<copyNode.getDomains().size();++i){ // Ajout des autres Domain3es
+					for (int i=compteur+1;i<copyNode.getDomains().size();++i){ // Ajout des autres Domaines
 						copyNode2.add(copyNode.get(i));
 						++compteur2;	
 					}
-					// On reduit un Domain3e de plus à la taille de 1 on fait l'apelle recursif
+					// On reduit un domaine de plus à la taille de 1 on fait l'apelle recursif
 					nbSolution+=pruneCarreBT(copyNode2);
 
-					for (int i=0;i<compteur2;++i){// On suprime les Domain3es ajouter dans le foreach précedent
+					for (int i=0;i<compteur2;++i){// On suprime les domaines ajouté dans le foreach précedent
 						copyNode2.removeLast();
 					}
 				}
@@ -282,7 +287,7 @@ public class BackTrackingCarre {
 		LinkedList<Integer> tree= new LinkedList<Integer>();
 		double chrono=System.currentTimeMillis();
 
-		int nbCase=3;// Les dimensions de l'échequier
+		int nbCase=3;// Les dimensions du carré
 
 		n.setNbCase(nbCase);
 		n.calculeNbMagique(nbCase);

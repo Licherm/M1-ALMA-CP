@@ -7,7 +7,13 @@ import domain.Domain2;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-
+/**
+ * Seconde version des Nodes pour le problème des queens  qui utilise 
+ * les Domaine2 (avec LinkedList)
+ * 
+ * @author Casanova Mario  et Araya Montalvo
+ *
+ */
 public class Node2 {
 
 private ArrayList<Domain2> domains;
@@ -24,9 +30,7 @@ private ArrayList<Domain2> domains;
 		this.domains=n.domains;
 	}
 
-	/* (non-Javadoc)
-	 * @see first.INode#replace(Interface.IDomain, first.Domain)
-	 */
+
 
 	public void replace( IDomain old, Domain2 newD){
 		int i;
@@ -34,32 +38,29 @@ private ArrayList<Domain2> domains;
 		
 		this.domains.set(i, newD);
 	}
-	
-	/* (non-Javadoc)
-	 * @see first.INode#add(first.Domain)
-	 */
 
+	/**
+	 * Ajoute un domaine
+	 * 
+	 * @param d : le domaine à ajouter
+	 */
 	public void add(Domain2 d){
 		this.domains.add(d);
 	}
-	
-	/* (non-Javadoc)
-	 * @see first.INode#removeLast()
-	 */
 
+	/**
+	 * remove le dernier Domaine
+	 */
 	public void removeLast(){
 		if (this.domains.size()>0)this.domains.remove(this.domains.size()-1);
 	}
-	
-	/* (non-Javadoc)
-	 * @see first.INode#get(int)
-	 */
 
 	public Domain2 get(int index){
 		return this.domains.get(index);
 	}
 	/**
-	 * @brief Va chercher la ligne du domaine à un indice précis
+	 * Va chercher la ligne du domaine à un indice précis
+	 * 
 	 * @param index = l'indice du domaine
 	 *  
 	 * @return int : la ligne du domaine à l'indice donnée
@@ -68,24 +69,16 @@ private ArrayList<Domain2> domains;
 		return this.domains.get(index).getLigne();
 	}
 
-	/* (non-Javadoc)
-	 * @see first.INode#getDomains()
-	 */
 
 	public ArrayList<Domain2> getDomains() {
 		return domains;
 	}
 
-	/* (non-Javadoc)
-	 * @see first.INode#setDomains(java.util.ArrayList)
-	 */
+
 	public void setDomains(ArrayList<Domain2> domains) {
 		this.domains = domains;
 	}
-	
-	/* (non-Javadoc)
-	 * @see first.INode#toStringQueen()
-	 */
+
 	public String toStringQueen(){
 		String s="";
 		int i=1;

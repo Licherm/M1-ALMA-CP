@@ -11,7 +11,12 @@ import Interface.IDomain;
 import Interface.INode;
 import domain.Domain;
 import node.Node;
-
+/**
+ * Première version du backTracking avec les TreeSet pour les domaines.
+ * 
+ * @author Casanova Mario  et Araya Montalvo
+ *
+ */
 public class BackTrackingTreeSetQueen {
 	
 	

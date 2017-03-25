@@ -2,7 +2,9 @@ package carreMagique;
 
 import java.util.LinkedList;
 
+import domain.Domain2;
 import domain.Domain3;
+import node.Node2;
 import node.Node3;
 
 public class ForwardCarre {
@@ -192,6 +194,23 @@ public class ForwardCarre {
 		return true;
 
 	}
+	
+	
+	
+	
+	public Domain3 forwardCheck(Domain3 lastDomainAdd, Domain3 domain){
+		int lastVal = lastDomainAdd.getValeurs().getFirst();
+
+		Domain3 domainMod = new Domain3();
+		
+		for ( int val : domain.getValeurs()){
+			if (val!=lastVal){
+				domainMod.addLast(val);
+			}
+		}
+		
+		return domainMod;
+	}
 
 
 	/**
@@ -205,55 +224,89 @@ public class ForwardCarre {
 	public int pruneCarreForward(Node3 n){
 		Node3 copyNode= new Node3(n);
 		Node3 copyNode2= new Node3();
-		Domain3 domain3= new Domain3();
+		Node3 copyNode3= new Node3();
+		Domain3 domain= new Domain3();
 		LinkedList<Integer> valeurs= new LinkedList<Integer>();
 		LinkedList<Integer> tree= new LinkedList<Integer>();
 		boolean solution=true;
 		int compteur=0;
 		int compteur2=0;
+		int compteur3=0;// Utile pendant le foward check
 		int nbSolution=0;
-
+		int ligne=0;
+		
+		copyNode.sortDomaines(); // On trie les domaines du noeud pour que les domaine de plus petite cardinalité soit tester en premier
+		
 		while((solution)&&(compteur<copyNode.getDomains().size())){
-			//Si la taille du Domain3 est de 1 alors on a plus besoin de travailler dessus on passe au suivant
+			//Si la taille du Domain2 est de 1 alors on a plus besoin de travailler dessus on passe au suivant
 			//copyNode.getDomains().get(compteur).getValeurs().size()==1
 			if(copyNode.get(compteur).getValeurs().size()==1){
 				copyNode2.add(copyNode.get(compteur));
+				//copyNode3.add(copyNode.get(compteur));
 				++compteur;
 			}else{
-				solution=false; // Un des Domain3es a encore plusieur valeurs -> on est pas encore arriver à une solution
+				solution=false; // Un des Domaines a encore plusieur valeurs -> on est pas encore arriver à une solution
 			}
-
+			
 		}
 		if(solution){
 			//Affichage prend trop de temper enlevez sauf pour debug
 			//System.out.println("Une solution !");
-			//System.out.println(n.toStringCarreMagique()+'\n');
+			//System.out.println(n.toStringQueen());
 			return ++nbSolution;
-
-		}else{
-
-			//On copy les valeurs du premier Domain3e de la liste qui à encore une taille supérieur à 1
-			valeurs=copyNode.get(compteur).getValeurs();
-			copyNode2.setNbCase(n.getNbCase());
-			copyNode2.setNbMagique(n.getNbMagique());
 			
-			domain3.setColonne(copyNode.get(compteur).getColonne());
-			domain3.setLigne(copyNode.get(compteur).getLigne());
+		}else{
+			//On copy les valeurs du premier Domaine de la liste qui à encore une taille supérieur à 1
+			valeurs=copyNode.get(compteur).getValeurs();
+			ligne=copyNode.getLigneAt(compteur);//On oublie pas de set la ligne
 			for (Integer val : valeurs){
+				boolean valide = true; // Passe à false si l'un des domaines est réduit à 0 par le forward check
+				boolean valide2 = true;
 				compteur2=0;
+				compteur3=0;
 				tree.add(val);
-				domain3.setValeurs(tree);
-				copyNode2.add(domain3);
+				domain.setValeurs(tree);
+				domain.setLigne(ligne);
+				copyNode2.add(domain);
+				copyNode3.add(domain);
+				int i=compteur+1;
 				if(isValide(copyNode2)){//Cette combinaison marche pour l'instant on avance
-					for (int i=compteur+1;i<copyNode.getDomains().size();++i){ // Ajout des autres Domain3es
-						copyNode2.add(copyNode.get(i));
-						++compteur2;	
+					while ((i<copyNode.getDomains().size())&&(valide)&&(valide2)){
+						//Je foward check ici
+						//copyNode.getLigneAt(i)-ligne = le nombre de ligne d'écart pour la diagonal
+						Domain3 domainTempo =forwardCheck(copyNode2.get(compteur-1),copyNode.get(i)); 
+						if(domainTempo.getValeurs().size()<=0){
+							valide = false;							
+						}else{
+							copyNode2.add(domainTempo);
+							// On doit utiliser copyNode3 car isValide ne support pas des Node avec des variables
+							//ayant un domiane d'une cardinalité supérieur à 1
+							copyNode3.add(domainTempo);
+							++compteur2;
+							// If obligatoire sinon on valide des mauvaises solutions car les domaines de taille 1 
+							//ne sont pas check au début de la fonction
+							if((domainTempo.getValeurs().size()==1)){
+									valide2=isValide(copyNode3);
+									++compteur3;
+								}else{
+									copyNode3.removeLast();// On veut pas de domaine de size >1 dans copyNode3
+								}
+							
+							++i;
+						}
+						
 					}
-					// On reduit un Domain3e de plus à la taille de 1 on fait l'apelle recursif
-					nbSolution+=pruneCarreForward(copyNode2);
-
-					for (int i=0;i<compteur2;++i){// On suprime les Domain3es ajouter dans le foreach précedent
+					if(valide&&valide2){
+						nbSolution+=pruneCarreForward(copyNode2);
+					}
+					
+					// On a reduit un Domaine de plus à la taille de 1 on fait l'apelle recursif
+					for (int p=0;p<compteur2;++p){// On suprime les Domain2es ajouter dans le foreach précedent
 						copyNode2.removeLast();
+					}
+					
+					for(int p=0;p<compteur3;++p){
+						copyNode3.removeLast();
 					}
 				}
 				copyNode2.removeLast();// Enlève pour essayer la prochaine valeur
