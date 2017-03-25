@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.ListIterator;
 
 public class QueensV5 {
-	private static final int NB_QUEENS = 15;
+	private static final int NB_QUEENS = 14;
 	private static final int DOM_SIZE = NB_QUEENS * NB_QUEENS;
 	
 	public static int branchAndPrune(LinkedList<Integer> node, ArrayList<Boolean> domain) {
@@ -85,14 +85,12 @@ public class QueensV5 {
 	
 	public static String printQueens(LinkedList<Integer> queens) {
 		ListIterator<Integer> valIt = queens.listIterator();
-		String printer = "";
+		String printer = "{ ";
 		while(valIt.hasNext()) {
-			printer += "ligne ";
-			printer += (valIt.nextIndex()+1);
-			printer += " colonne ";
 			printer += (valIt.next()+1);
-			printer += '\n';
+			if(valIt.hasNext()) printer += ", ";
 		}
+		printer += " }";
 		return printer;
 	}
 	

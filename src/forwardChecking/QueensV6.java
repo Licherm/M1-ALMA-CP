@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.ListIterator;
 
 public class QueensV6 {
-	private static final int NB_QUEENS = 14;
+	private static final int NB_QUEENS = 15;
 	private static final int DOM_SIZE = NB_QUEENS * NB_QUEENS;
 	
 	public static int branchAndPrune(LinkedList<Integer> node, ArrayList<Boolean> domain, ArrayList<Integer> domSizes) {
@@ -40,8 +40,7 @@ public class QueensV6 {
 				} else {
 					// pruning domains
 					domInd = workingNode.size();
-					// il s'arrete si un domaine est vide mais le cout pour savoir si est domaine est vide
-					// est moins interressant que de bosser un peu plus sur des solutions pas possible.
+					// s'arrete si un domaine vide est généré lors du pruning
 					stillValid = true;
 					while (domInd < NB_QUEENS && stillValid) {
 						
@@ -89,7 +88,7 @@ public class QueensV6 {
 					while(pruneIt.hasNext()) {
 						valInd = pruneIt.next();
 						workingDom.set(valInd, true);
-						workingSizes.set(valInd % NB_QUEENS, workingSizes.get(valInd % NB_QUEENS)+1);
+						workingSizes.set(valInd / NB_QUEENS, workingSizes.get(valInd / NB_QUEENS) + 1);
 						pruneIt.remove();
 					}
 				}
@@ -102,14 +101,12 @@ public class QueensV6 {
 	
 	public static String printQueens(LinkedList<Integer> queens) {
 		ListIterator<Integer> valIt = queens.listIterator();
-		String printer = "";
+		String printer = "{ ";
 		while(valIt.hasNext()) {
-			printer += "ligne ";
-			printer += (valIt.nextIndex()+1);
-			printer += " colonne ";
 			printer += (valIt.next()+1);
-			printer += '\n';
+			if(valIt.hasNext()) printer += ", ";
 		}
+		printer += " }";
 		return printer;
 	}
 	
