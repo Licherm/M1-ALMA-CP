@@ -5,17 +5,27 @@ import java.util.LinkedList;
 import java.util.TreeSet;
 
 import backTracking.BackTrackingQueen;
-import backTracking.Domain;
-import backTracking.Node;
+import domain.Domain;
+import domain.Domain2;
+import node.Node;
+import node.Node2;
 
-public class BackTrackingQueen2 {
+/**
+ * Forward Checking pour le problème des queens en utilisant les classe 
+ * Domain2 et Node2
+ * 
+ * @author Casanova Mario  et Araya Montalvo
+ *
+ */
+public class ForwardQueens {
 
 
 	
 	
 	/**
-	 * @brief test si une affectation donnÃ©e est possible. Version amélioré sans vérification inutiles.
-	 * @param Node2 = Node2 ou chacun des Domain2s est rÃ©duit Ã  une seule valeur
+	 *  Test si une affectation donnée est possible
+	 *  
+	 * @param Node2 = node ou chacun des Domaines est réduit Ã  une seule valeur
 	 *  
 	 * @return true si l'affectation est valide false sinon
 	 */
@@ -46,7 +56,8 @@ public class BackTrackingQueen2 {
 	}
 	
 	/**
-	 * @brief Forward check les domains non encore fixé
+	 *  Forward check les domains non encore fixé
+	 *  
 	 * @param LastValAdd = dernière valeur attribuée dans le prune
 	 *  @param index = pour la diagonal indique le nombre de ligne d'écart
 	 *  @param domain = le domain qu'on veut prune
@@ -58,14 +69,15 @@ public class BackTrackingQueen2 {
 		boolean check = true;
 		for (int val : domain.getValeurs() ){
 			check=true;
+			//Test même colonne
 			if(val==lastValAdd){
 				check=false;
 			}
-			// TODO : ce if provoque le bug trouver pourquoi
+			//TestDiagonal
 			if(Math.abs(val-lastValAdd)==index){
 				check =false;
 			}			
-			if (check){
+			if (check){// Valide on ajoute
 				domainMod.addLast(val);
 			}
 		}
@@ -96,8 +108,7 @@ public class BackTrackingQueen2 {
 		int nbSolution=0;
 		int ligne=0;
 		while((solution)&&(compteur<copyNode.getDomains().size())){
-			//Si la taille du Domain2 est de 1 alors on a plus besoin de travailler dessus on passe au suivant
-			//copyNode.getDomains().get(compteur).getValeurs().size()==1
+			//Si la taille du domaine est de 1 alors on a plus besoin de travailler dessus on passe au suivant
 			if(copyNode.get(compteur).getValeurs().size()==1){
 				copyNode2.add(copyNode.get(compteur));
 				++compteur;
@@ -113,9 +124,9 @@ public class BackTrackingQueen2 {
 			return ++nbSolution;
 			
 		}else{
-			
-			//On copy les valeurs du premier Domaine de la liste qui à encore une taille supérieur à 1
+			//Initialisation de copyNode3
 			copyNode3.setDomains(new ArrayList<Domain2>(copyNode2.getDomains()));
+			//On copy les valeurs du premier Domaine de la liste qui à encore une taille supérieur à 1
 			valeurs=copyNode.get(compteur).getValeurs();
 			ligne=copyNode.getLigneAt(compteur);//On oublie pas de set la ligne
 			for (Integer val : valeurs){
@@ -130,17 +141,16 @@ public class BackTrackingQueen2 {
 				copyNode3.add(domain2);
 				int i=compteur+1;
 				if(isValideV2(copyNode2)){//Cette combinaison marche pour l'instant on avance
-					//for (int i=compteur+1;i<copyNode.getDomains().size();++i){
 					while ((i<copyNode.getDomains().size())&&(valide)&&(valide2)){
 						//Je foward check ici
-						//copyNode.getLigneAt(i)-ligne = le nombre de ligne d'écart pour la diagonal
+						//copyNode.getLigneAt(i)-ligne = le nombre de ligne d'écart pour la contrainte sur les  diagonales
 						Domain2 domainTempo =fowardCheck(val,copyNode.getLigneAt(i)-ligne,copyNode.get(i)); 
 						if(domainTempo.getValeurs().size()<=0){
 							valide = false;							
 						}else{
 							copyNode2.add(domainTempo);
 							// On doit utiliser copyNode3 car isValide ne support pas des Node avec des variables
-							//ayant un domiane d'une cardinalité supérieur à 1
+							//ayant un domaine d'une cardinalité supérieur à 1
 							copyNode3.add(domainTempo);
 							++compteur2;
 							// If obligatoire sinon on valide des mauvaises solutions car les domaines de taille 1 
@@ -162,10 +172,10 @@ public class BackTrackingQueen2 {
 					
 					// On a reduit un Domaine de plus à la taille de 1 on fait l'apelle recursif
 					
-					for (int p=0;p<compteur2;++p){// On suprime les Domain2es ajouter dans le foreach précedent
+					for (int p=0;p<compteur2;++p){// On suprime les domaines ajouter dans le foreach précedent
 						copyNode2.removeLast();
 					}
-					
+					//Pareil pour copyNode3
 					for(int p=0;p<compteur3;++p){
 						copyNode3.removeLast();
 					}
@@ -183,8 +193,7 @@ public class BackTrackingQueen2 {
 	
 	
 	public static void main(String[] args) {
-		BackTrackingQueen2 backQ= new BackTrackingQueen2();
-		//Domain2 d= new Domain2();
+		ForwardQueens backQ= new ForwardQueens();
 		Node2 n = new Node2();
 		LinkedList<Integer> tree= new LinkedList<Integer>();
 		double chrono=System.currentTimeMillis();

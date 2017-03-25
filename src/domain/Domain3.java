@@ -3,8 +3,14 @@ package domain;
 import java.util.LinkedList;
 
 import Interface.IDomain;
-import forwardChecking.Domain2;
 
+
+/**
+ * Domaine pour le problème des carré magique
+ * 
+ * @author Casanova Mario  et Araya Montalvo
+ *
+ */
 public class Domain3  implements  IDomain, Comparable<Domain3>{
 
 	private LinkedList<Integer> valeurs;

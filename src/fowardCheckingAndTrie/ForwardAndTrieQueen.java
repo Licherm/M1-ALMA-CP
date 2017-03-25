@@ -3,14 +3,22 @@ package fowardCheckingAndTrie;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-import forwardChecking.Domain2;
-import forwardChecking.Node2;
-
+import domain.Domain2;
+import node.Node2;
+/**
+ * Forward Checking pour le problème des queens en utilisant les classe 
+ * Domain2 et Node2. En plus on trie les domaines à chaque itérations des plus
+ * petit au plus grand en taille.
+ * 
+ * @author Casanova Mario  et Araya Montalvo
+ *
+ */
 public class ForwardAndTrieQueen {
 
 	/**
-	 * @brief test si une affectation donnÃ©e est possible. Version amélioré sans vérification inutiles.
-	 * @param Node2 = Node2 ou chacun des Domain2s est rÃ©duit Ã  une seule valeur
+	 * Test si une affectation donnée est possible
+	 * 
+	 * @param Node2 = Node2 ou chacun des domaines est réduit à  une seule valeur
 	 *  
 	 * @return true si l'affectation est valide false sinon
 	 */
@@ -41,7 +49,7 @@ public class ForwardAndTrieQueen {
 	}
 	
 	/**
-	 * @brief Forward check les domains non encore fixé
+	 * @brief Forward check les domaines non encore fixé
 	 * @param LastValAdd = dernière valeur attribuée dans le prune
 	 *  @param index = pour la diagonal indique le nombre de ligne d'écart
 	 *  @param domain = le domain qu'on veut prune
@@ -56,10 +64,11 @@ public class ForwardAndTrieQueen {
 				
 			}
 			check=true;
+			//Test si même colonne
 			if(val==lastValAdd){
 				check=false;
 			}
-			// TODO : ce if provoque le bug trouver pourquoi
+			//Test si même diagonale
 			if(Math.abs(val-lastValAdd)==index){
 				check =false;
 			}			
@@ -99,10 +108,8 @@ public class ForwardAndTrieQueen {
 		
 		while((solution)&&(compteur<copyNode.getDomains().size())){
 			//Si la taille du Domain2 est de 1 alors on a plus besoin de travailler dessus on passe au suivant
-			//copyNode.getDomains().get(compteur).getValeurs().size()==1
 			if(copyNode.get(compteur).getValeurs().size()==1){
 				copyNode2.add(copyNode.get(compteur));
-				copyNode3.add(copyNode.get(compteur));
 				++compteur;
 			}else{
 				solution=false; // Un des Domaines a encore plusieur valeurs -> on est pas encore arriver à une solution
@@ -119,6 +126,8 @@ public class ForwardAndTrieQueen {
 			//On copy les valeurs du premier Domaine de la liste qui à encore une taille supérieur à 1
 			valeurs=copyNode.get(compteur).getValeurs();
 			ligne=copyNode.getLigneAt(compteur);//On oublie pas de set la ligne
+			//initialisation copyNode3
+			copyNode3.setDomains(new ArrayList<Domain2>(copyNode2.getDomains()));
 			for (Integer val : valeurs){
 				boolean valide = true; // Passe à false si l'un des domaines est réduit à 0 par le forward check
 				boolean valide2 = true;
@@ -133,14 +142,14 @@ public class ForwardAndTrieQueen {
 				if(isValideV2(copyNode2)){//Cette combinaison marche pour l'instant on avance
 					while ((i<copyNode.getDomains().size())&&(valide)&&(valide2)){
 						//Je foward check ici
-						//copyNode.getLigneAt(i)-ligne = le nombre de ligne d'écart pour la diagonal
+						//copyNode.getLigneAt(i)-ligne = le nombre de ligne d'écart pour la contrainte sur les diagonales
 						Domain2 domainTempo =fowardCheck(val,Math.abs(copyNode.getLigneAt(i)-ligne),copyNode.get(i)); 
 						if(domainTempo.getValeurs().size()<=0){
 							valide = false;							
 						}else{
 							copyNode2.add(domainTempo);
-							// On doit utiliser copyNode3 car isValide ne support pas des Node avec des variables
-							//ayant un domiane d'une cardinalité supérieur à 1
+							// On doit utiliser copyNode3 car isValide ne support pas des node avec des variables
+							//ayant un domaine d'une cardinalité supérieur à 1
 							copyNode3.add(domainTempo);
 							++compteur2;
 							// If obligatoire sinon on valide des mauvaises solutions car les domaines de taille 1 
@@ -161,10 +170,10 @@ public class ForwardAndTrieQueen {
 					}
 					
 					// On a reduit un Domaine de plus à la taille de 1 on fait l'apelle recursif
-					for (int p=0;p<compteur2;++p){// On suprime les Domain2es ajouter dans le foreach précedent
+					for (int p=0;p<compteur2;++p){// On suprime les domaines ajouter dans le foreach précedent
 						copyNode2.removeLast();
 					}
-					
+					//Pareil pour copyNode3
 					for(int p=0;p<compteur3;++p){
 						copyNode3.removeLast();
 					}

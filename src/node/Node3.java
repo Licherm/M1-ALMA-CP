@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import Interface.IDomain;
-import forwardChecking.Domain2;
-import forwardChecking.Node2;
 import domain.*;
-
+/**
+ * Node pour le problème des carré magique
+ * 
+ * @author Casanova Mario  et Araya Montalvo
+ *
+ */
 public class Node3 {
 private ArrayList<Domain3> domains;
 private int nbCase;
@@ -31,9 +34,7 @@ private int nbMagique; // Le nombre au quel la somme de chaque ligne, colonne, d
 		nbCase=n.nbMagique;
 	}
 
-	/* (non-Javadoc)
-	 * @see first.INode#replace(Interface.IDomain, first.Domain)
-	 */
+
 
 	public void replace( IDomain old, Domain3 newD){
 		int i;
@@ -42,31 +43,29 @@ private int nbMagique; // Le nombre au quel la somme de chaque ligne, colonne, d
 		this.domains.set(i, newD);
 	}
 	
-	/* (non-Javadoc)
-	 * @see first.INode#add(first.Domain)
-	 */
 
+	/**
+	 * Ajoute un domaine
+	 * 
+	 * @param d : le domaine à ajouter
+	 */
 	public void add(Domain3 d){
 		this.domains.add(d);
 	}
 	
-	/* (non-Javadoc)
-	 * @see first.INode#removeLast()
-	 */
+
 
 	public void removeLast(){
 		if (this.domains.size()>0)this.domains.remove(this.domains.size()-1);
 	}
-	
-	/* (non-Javadoc)
-	 * @see first.INode#get(int)
-	 */
+
 
 	public Domain3 get(int index){
 		return this.domains.get(index);
 	}
 	/**
-	 * @brief Va chercher la ligne du domaine à un indice précis
+	 *  Va chercher la ligne du domaine à un indice précis
+	 * 
 	 * @param index = l'indice du domaine
 	 *  
 	 * @return int : la ligne du domaine à l'indice donnée
@@ -75,17 +74,12 @@ private int nbMagique; // Le nombre au quel la somme de chaque ligne, colonne, d
 		return this.domains.get(index).getLigne();
 	}
 
-	/* (non-Javadoc)
-	 * @see first.INode#getDomains()
-	 */
 
 	public ArrayList<Domain3> getDomains() {
 		return domains;
 	}
 
-	/* (non-Javadoc)
-	 * @see first.INode#setDomains(java.util.ArrayList)
-	 */
+
 	public void setDomains(ArrayList<Domain3> domains) {
 		this.domains = domains;
 	}
@@ -105,15 +99,16 @@ private int nbMagique; // Le nombre au quel la somme de chaque ligne, colonne, d
 	public void setNbMagique(int nbMagique) {
 		this.nbMagique = nbMagique;
 	}
-	
+	/**
+	 * Calcule le nombre au quel la somme d'une ligne,colonne,diagonale doit être égale
+	 * 
+	 * @param n : le nombre de case d'une ligne du carré
+	 */
 	public void calculeNbMagique(int n){
 		this.nbMagique=(int) ((n*(Math.pow(n,2)+1))/2);
 	}
 	
 
-	/* (non-Javadoc)
-	 * @see first.INode#toStringQueen()
-	 */
 	public String toStringCarreMagique(){
 		String s="";
 		int i=1;

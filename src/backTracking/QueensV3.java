@@ -3,6 +3,14 @@ package backTracking;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
+/**
+ * Version du backtraking du problème des queens avec les nodes symbolisé et domaines
+ * symbolisé avec des linkedlist et sans classe additionnelle
+ * 
+ * @author Casanova Mario  et Araya Montalvo
+ *
+ */
+
 public class QueensV3 {
 	private static final int NB_QUEENS = 10;
 	
