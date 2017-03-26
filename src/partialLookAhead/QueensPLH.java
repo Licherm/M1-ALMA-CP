@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import java.util.ListIterator;
 
 public class QueensPLH {
-	private static final int NB_QUEENS = 12;
+	private static final int NB_QUEENS = 13;
 	private static final int DOM_SIZE = NB_QUEENS * NB_QUEENS;
 	
 	public static class Node {
