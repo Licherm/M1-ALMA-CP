@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
-public class Queens1Sol {
+public class QueensV5FC1Sol {
 	private static final int NB_QUEENS = 32;
 	private static final int DOM_SIZE = NB_QUEENS * NB_QUEENS;
 	
@@ -39,7 +39,6 @@ public class Queens1Sol {
 					// pruning domains
 					domInd = workingNode.size();
 					// peut etre améliorable pour qu'il s'arrête si un domaine se retrouve vide
-					// mais la solution a laquelle j'ai pensé est moins efficace
 					while (domInd < NB_QUEENS) {
 						
 						// une seule reine par colonne

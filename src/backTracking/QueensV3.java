@@ -12,7 +12,7 @@ import java.util.ListIterator;
  */
 
 public class QueensV3 {
-	private static final int NB_QUEENS = 10;
+	private static final int NB_QUEENS = 15;
 	
 	public static int branchAndPrune(LinkedList<Integer> node) {
 		int sols = 0;
