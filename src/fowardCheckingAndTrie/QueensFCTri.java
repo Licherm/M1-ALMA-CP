@@ -57,10 +57,11 @@ public class QueensFCTri {
 		int smallestSize;
 		int domStart, domEnd; //index de debut et fin du domaine sur lequel on travaille dans la matrice de domaines
 		int domInd, valInd, diagInd; // valeurs temporaires pour les calculs du pruning
+		int pruneInd, branchInd; // valeurs temporaires pour le backtracking
 		boolean stillValid, validDiag;
 		boolean newAff = true;
 		
-		smallest = node.affCount == 0 ? NB_QUEENS / 2 : findSmallest(node.domSizes);
+		smallest = node.affCount == 0 ? NB_QUEENS / 2 : findSmallest(node.domSizes, node.unaffectedInds);
 		smallestSize = node.domSizes.get(smallest);
 		
 		domStart = smallest * NB_QUEENS;
@@ -75,8 +76,9 @@ public class QueensFCTri {
 		
 		// sauvegarde des valeur que l'on prune pour restaurer le noeud lors du changement de valeur
 		LinkedList<Integer> pruneSave = new LinkedList<Integer>();
-		// sauvegarde des valeurs que l'on branch vu qu'il y a un cuisinage partiel en amont.
+		// sauvegarde des valeurs que l'on branch vu qu'il y a un regardage partiel en amont.
 		LinkedList<Integer> branchSave = new LinkedList<Integer>();
+		ListIterator<Integer> branchIt;
 		
 		// on se positionne sur le bon domaine
 		ListIterator<Boolean> valIt = workingDom.listIterator(domStart);
@@ -92,9 +94,9 @@ public class QueensFCTri {
 				value = valIt.nextIndex() % NB_QUEENS;
 				// récupération de la valeur a étudier (indice de colonne dans la matrice)
 				if (valIt.next()) {
+					System.out.println(printDom(workingDom));
 					// affectation de la premiere valeur du domaine
 					workingNode.set(smallest, value);
-					workingSizes.set(smallest, 1);
 					unAffected.remove(smallest);
 					branchSave.add(smallest);
 					
@@ -104,13 +106,30 @@ public class QueensFCTri {
 						// la combinaison est une solution
 						System.out.println(printQueens(workingNode));
 						++sols;
+						pruneIt = pruneSave.listIterator();
+						while(pruneIt.hasNext()) {
+							pruneInd = pruneIt.next();
+							workingDom.set(pruneInd, true);
+							workingSizes.set(pruneInd / NB_QUEENS, workingSizes.get(pruneInd / NB_QUEENS) + 1);
+							pruneIt.remove();
+						}
+						/*
+						branchIt = branchSave.listIterator();
+						while(branchIt.hasNext()) {
+							branchInd = branchIt.next();
+							workingNode.set(branchInd, -1);
+							unAffected.add(branchInd);
+							--node.affCount;
+						}
+						*/
+						newAff = false;
 					} else {
 						// pruning domains
 						domInd = 0;
 						// s'arrete si un domaine vide est généré lors du pruning
 						stillValid = true;
 						while (domInd < NB_QUEENS && stillValid) {
-							if (workingSizes.get(domInd) > 1 && domInd != smallest) {
+							if (unAffected.contains(domInd) && domInd != smallest) {
 								// on ne branch pas les domaines dans l'ordre des variables,
 								// il faut donc sauter celui en cours et ceux qui sont déja attribués.
 							
@@ -135,7 +154,7 @@ public class QueensFCTri {
 								}
 								
 								diagInd = valInd + (domInd - smallest);
-								validDiag &= diagInd >= domInd * NB_QUEENS && diagInd < (domInd + 1) * NB_QUEENS;
+								validDiag = diagInd >= domInd * NB_QUEENS && diagInd < (domInd + 1) * NB_QUEENS;
 								// diagonale droite
 								if(validDiag) {
 									if(workingDom.get(diagInd)) {
@@ -166,21 +185,25 @@ public class QueensFCTri {
 						
 						// backtracking - unpruning
 						if ( !newAff ) {
-						pruneIt = pruneSave.listIterator();
+							pruneIt = pruneSave.listIterator();
 							while(pruneIt.hasNext()) {
-								valInd = pruneIt.next();
-								workingDom.set(valInd, true);
-								workingSizes.set(valInd / NB_QUEENS, workingSizes.get(valInd / NB_QUEENS) + 1);
+								pruneInd = pruneIt.next();
+								workingDom.set(pruneInd, true);
+								workingSizes.set(pruneInd / NB_QUEENS, workingSizes.get(pruneInd / NB_QUEENS) + 1);
 								pruneIt.remove();
 							}
 						}
+						
 					}
-					// backtracking - unbranching
 					if ( !newAff ) {
-						workingNode.set(smallest, -1);
-						workingSizes.set(smallest, smallestSize);
-						unAffected.add(smallest);
-						--node.affCount;
+						// backtracking - unbranching
+						branchIt = branchSave.listIterator();
+						while(branchIt.hasNext()) {
+							branchInd = branchIt.next();
+							workingNode.set(branchInd, -1);
+							unAffected.add(branchInd);
+							--node.affCount;
+						}
 					}
 				}
 			}

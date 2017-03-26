@@ -287,7 +287,7 @@ public class BackTrackingCarre {
 		LinkedList<Integer> tree= new LinkedList<Integer>();
 		double chrono=System.currentTimeMillis();
 
-		int nbCase=3;// Les dimensions du carré
+		int nbCase=4;// Les dimensions du carré
 
 		n.setNbCase(nbCase);
 		n.calculeNbMagique(nbCase);
